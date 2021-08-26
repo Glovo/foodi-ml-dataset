@@ -1,4 +1,4 @@
-<img src="/imgs/grid_img.png" align="top" width="1028" height="258"/>
+<img src="/imgs/grid_img.png" align="top" width="1028" height="244"/>
 
 # Foodi-ML dataset
 
@@ -20,10 +20,10 @@ If you do not have AWS CLI already installed, please download the latest version
 
 ## 1.2. Download FooDI-ML
 1. Run the following command to download the DataFrame in `ENTER_DESTINATION_PATH` directory. We provide an example as if we were going to download the dataset in the directory `/mnt/data/foodi-ml/`.
+                                                       
+   `aws s3 cp s3://glovo-products-dataset-d1c9720d/glovo-foodi-ml-dataset.csv ENTER_DESTINATION_PATH --no-sign-request`
 
-`aws s3 cp s3://glovo-products-dataset-d1c9720d/glovo-foodi-ml-dataset.csv ENTER_DESTINATION_PATH --no-sign-request`
-
-_Example:_ `aws s3 cp s3://glovo-products-dataset-d1c9720d/glovo-foodi-ml-dataset.csv /mnt/data/foodi-ml/ --no-sign-request` 
+   _Example:_ `aws s3 cp s3://glovo-products-dataset-d1c9720d/glovo-foodi-ml-dataset.csv /mnt/data/foodi-ml/ --no-sign-request` 
 
 2. Run the following command to download the images in `ENTER_DESTINATION_PATH/dataset` directory (**please note the appending of /dataset**). This command will download the images in `ENTER_DESTINATION_PATH`directory.
  
