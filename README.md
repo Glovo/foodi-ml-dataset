@@ -1,6 +1,8 @@
-<img src="/imgs/Glovo_logo.png" align="top" width="320" height="180"/>
+<img src="/imgs/grid_img.png" align="top" width="320" height="180"/>
 
 # Foodi-ML dataset
+
+<img src="/imgs/Glovo_logo.png" align="right" width="320" height="180"/>
 This is the GitHub repository for the Food Drinks and groceries Images Multi Lingual (FooDI-ML) dataset.
 This dataset contains over 1.5M unique images and over 9.5M store names, product names, descriptions and collection sections gathered from the Glovo application. 
 The data made available corresponds to food, drinks and groceries products from over 38 countries in Europe, the Middle East, Africa and Latin America. 
@@ -43,11 +45,11 @@ Our dataset is managed by the DataFrame `glovo-foodi-ml-dataset.csv`. This datas
   ```'ES', 'PL', 'CI', 'PT', 'MA', 'IT', 'AR', 'BG', 'KZ', 'BR', 'ME', 'TR', 'PE', 'SI', 'GE', 'EG', 'RS', 'RO', 'HR', 'UA', 'DO', 'KG', 'CR', 'UY', 'EC', 'HN', 'GH', 'KE', 'GT', 'CL', 'FR', 'BA', 'PA', 'UG', 'MD', 'CO', 'NG', 'PR'```
   
 * **city_code**: Name of the city where the store is located.
-* **store_name**: Name of the store selling that product. If `store_name` is equal to `AS_XYZ`, it represents an auxiliary store, whose information can't not be used to retrieve product information.
+* **store_name**: Name of the store selling that product. If `store_name` is equal to `AS_XYZ`, it represents an auxiliary store. This means that while the samples contained are for the most part valid, the store name can't be used in learning tasks
 * **product_name**: Name of the product. All products have `product_name`, so this column does not contain any `NaN` value.
 * **collection_name**: Name of the section of the product, used for organizing the store menu. Common values are _"drinks", "our pizzas", "desserts"_. All products have `collection_name` associated to it, so this column does not have any `NaN` value in it.
 * **product_description**: A detailed description of the product, describing ingredients and components of it. **Not all products of our data have description, so this column contains `NaN` values that must be removed by the researchers as a preprocessing step.**
-* **subset**: Categorical vriable indicating if the sample belongs to the Training, Validation or Test set. The respective values in the DataFrame are `["train", "val", "test"]`. 
+* **subset**: Categorical variable indicating if the sample belongs to the Training, Validation or Test set. The respective values in the DataFrame are `["train", "val", "test"]`. 
 * **HIER**: Boolean variable indicating if the store name can be used to retrieve product information (indicating if the store_name is **not** an auxiliary store (with code `AS_XYZ`)).
 * **s3_path**: Path of the image of the product in the disk location you chose. 
 
