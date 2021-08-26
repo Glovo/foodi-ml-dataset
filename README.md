@@ -27,15 +27,15 @@ If you do not have AWS CLI already installed, please download the latest version
 
 2. Run the following command to download the images in `ENTER_DESTINATION_PATH/dataset` directory (**please note the appending of /dataset**). This command will download the images in `ENTER_DESTINATION_PATH`directory.
  
-`aws s3 cp --recursive s3://glovo-products-dataset-d1c9720d/dataset ENTER_DESTINATION_PATH/dataset --no-sign-request --quiet`
+   `aws s3 cp --recursive s3://glovo-products-dataset-d1c9720d/dataset ENTER_DESTINATION_PATH/dataset --no-sign-request --quiet`
            
-_Example:_ `aws s3 cp --recursive s3://glovo-products-dataset-d1c9720d/dataset /mnt/data/foodi-ml/dataset --no-sign-request --quiet`
+   _Example:_ `aws s3 cp --recursive s3://glovo-products-dataset-d1c9720d/dataset /mnt/data/foodi-ml/dataset --no-sign-request --quiet`
 
 3. Run the script `rename_images.py`. This script modifies the DataFrame column to include the paths of the images in the location you specified with `ENTER_DESTINATION_PATH/dataset`.
-```
+   ```
    pip install pandas
    python scripts/rename_images.py --output-dir ENTER_DESTINATION_PATH
-```
+   ```
 
 # Getting started
 Our dataset is managed by the DataFrame `glovo-foodi-ml-dataset.csv`. This dataset contains the following columns:
