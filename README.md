@@ -1,4 +1,4 @@
-<img src="/imgs/grid_img.png" align="top" width="1028" height="514"/>
+<img src="/imgs/grid_img.png" align="top" width="1028" height="258"/>
 
 # Foodi-ML dataset
 
