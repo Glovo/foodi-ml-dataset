@@ -17,13 +17,23 @@ Our dataset is composed of:
 If you do not have AWS CLI already installed, please download the latest version of [AWS CLI](https://aws.amazon.com/cli/ "AWS CLI page") for your operating system.
 
 ## 1.2. Download FooDI-ML
-1. Run the following command to download the DataFrame in `ENTER_DESTINATION_PATH` directory.
+1. Run the following command to download the DataFrame in `ENTER_DESTINATION_PATH` directory. We provide an example as if we were going to download the dataset in the directory `/mnt/data/foodi-ml/`.
 
 `aws s3 cp s3://glovo-products-dataset-d1c9720d/glovo-foodi-ml-dataset.csv ENTER_DESTINATION_PATH --no-sign-request`
 
-2. Run the following command to download the images in `ENTER_DESTINATION_PATH` directory. This command will download the images in 
+_Example:_ `aws s3 cp s3://glovo-products-dataset-d1c9720d/glovo-foodi-ml-dataset.csv /mnt/data/foodi-ml/ --no-sign-request` 
+
+2. Run the following command to download the images in `ENTER_DESTINATION_PATH/dataset` directory (**please note the appending of /dataset**). This command will download the images in `ENTER_DESTINATION_PATH`directory.
  
-`aws s3 cp --recursive s3://glovo-products-dataset-d1c9720d/dataset ENTER_DESTINATION_PATH --no-sign-request --quiet`
+`aws s3 cp --recursive s3://glovo-products-dataset-d1c9720d/dataset ENTER_DESTINATION_PATH/dataset --no-sign-request --quiet`
+           
+_Example:_ `aws s3 cp --recursive s3://glovo-products-dataset-d1c9720d/dataset /mnt/data/foodi-ml/dataset --no-sign-request --quiet`
+
+3. Run the script `rename_images.py`. This script modifies the DataFrame column to include the paths of the images in the location you specified with `ENTER_DESTINATION_PATH/dataset`.
+```
+   pip install pandas
+   python scripts/rename_images.py --output-dir ENTER_DESTINATION_PATH
+```
 
 # Getting started
 Our dataset is managed by the DataFrame `glovo-foodi-ml-dataset.csv`. This dataset contains the following columns:
@@ -32,14 +42,14 @@ Our dataset is managed by the DataFrame `glovo-foodi-ml-dataset.csv`. This datas
 
   ```'ES', 'PL', 'CI', 'PT', 'MA', 'IT', 'AR', 'BG', 'KZ', 'BR', 'ME', 'TR', 'PE', 'SI', 'GE', 'EG', 'RS', 'RO', 'HR', 'UA', 'DO', 'KG', 'CR', 'UY', 'EC', 'HN', 'GH', 'KE', 'GT', 'CL', 'FR', 'BA', 'PA', 'UG', 'MD', 'CO', 'NG', 'PR'```
   
-* **city_code**: Self explanatory.
+* **city_code**: Name of the city where the store is located.
 * **store_name**: Name of the store selling that product. If `store_name` is equal to `AS_XYZ`, it represents an auxiliary store, whose information can't not be used to retrieve product information.
-* **product_name**: Self explanatory. All products have `product_name`, so this column does not contain any `NaN` value.
+* **product_name**: Name of the product. All products have `product_name`, so this column does not contain any `NaN` value.
 * **collection_name**: Name of the section of the product, used for organizing the store menu. Common values are _"drinks", "our pizzas", "desserts"_. All products have `collection_name` associated to it, so this column does not have any `NaN` value in it.
 * **product_description**: A detailed description of the product, describing ingredients and components of it. **Not all products of our data have description, so this column contains `NaN` values that must be removed by the researchers as a preprocessing step.**
 * **subset**: Categorical vriable indicating if the sample belongs to the Training, Validation or Test set. The respective values in the DataFrame are `["train", "val", "test"]`. 
 * **HIER**: Boolean variable indicating if the store name can be used to retrieve product information (indicating if the store_name is **not** an auxiliary store (with code `AS_XYZ`)).
-* **s3_path**: Path of the image of the product. If a path different from `.` was entered in `ENTER_DESTINATION_PATH` while downloading the images... TODO PENDING 
+* **s3_path**: Path of the image of the product in the disk location you chose. 
 
 # Changelog
 
