@@ -5,9 +5,13 @@
 <img src="/imgs/Glovo_logo.png" align="right" width="320" height="180"/>
 This is the GitHub repository for the Food Drinks and groceries Images Multi Lingual (FooDI-ML) dataset.
 This dataset contains over 1.5M unique images and over 9.5M store names, product names, descriptions and collection sections gathered from the Glovo application. 
-The data made available corresponds to food, drinks and groceries products from over 38 countries in Europe, the Middle East, Africa and Latin America. 
+The data made available corresponds to food, drinks and groceries products from over 37 countries in Europe, the Middle East, Africa and Latin America. 
 The dataset comprehends 33 languages, including 870k samples of languages of countries from Eastern Europe and West Asia such as Ukrainian and Kazakh, which have been so far underrepresented in publicly available visio-linguistic datasets. 
 The dataset also includes widely spoken languages such as Spanish and English.
+
+## License
+
+The FooDI-ML dataset is offered under the [BY-NC-SA license](https://creativecommons.org/licenses/by-nc-sa/2.0/ "BY-NC-SA license").
 
 # 1. Download the dataset
 The FooDI-ML dataset is hosted in a S3 bucket in AWS. Therefore AWS CLI is needed to download it. 
@@ -40,9 +44,9 @@ If you do not have AWS CLI already installed, please download the latest version
 # Getting started
 Our dataset is managed by the DataFrame `glovo-foodi-ml-dataset.csv`. This dataset contains the following columns:
 
-* **country_code**: This column comprehends 38 unique country codes as explained in our paper. These codes are:
+* **country_code**: This column comprehends 37 unique country codes as explained in our paper. These codes are:
 
-  ```'ES', 'PL', 'CI', 'PT', 'MA', 'IT', 'AR', 'BG', 'KZ', 'BR', 'ME', 'TR', 'PE', 'SI', 'GE', 'EG', 'RS', 'RO', 'HR', 'UA', 'DO', 'KG', 'CR', 'UY', 'EC', 'HN', 'GH', 'KE', 'GT', 'CL', 'FR', 'BA', 'PA', 'UG', 'MD', 'CO', 'NG', 'PR'```
+  ```'ES', 'PL', 'CI', 'PT', 'MA', 'IT', 'AR', 'BG', 'KZ', 'BR', 'ME', 'TR', 'PE', 'SI', 'GE', 'EG', 'RS', 'RO', 'HR', 'UA', 'DO', 'KG', 'CR', 'UY', 'EC', 'HN', 'GH', 'KE', 'GT', 'CL', 'FR', 'BA', 'PA', 'UG', 'MD', 'NG', 'PR'```
   
 * **city_code**: Name of the city where the store is located.
 * **store_name**: Name of the store selling that product. If `store_name` is equal to `AS_XYZ`, it represents an auxiliary store. This means that while the samples contained are for the most part valid, the store name can't be used in learning tasks
@@ -53,7 +57,8 @@ Our dataset is managed by the DataFrame `glovo-foodi-ml-dataset.csv`. This datas
 * **HIER**: Boolean variable indicating if the store name can be used to retrieve product information (indicating if the store_name is **not** an auxiliary store (with code `AS_XYZ`)).
 * **s3_path**: Path of the image of the product in the disk location you chose. 
 
-# Changelog
+# Dataset Statistics
+A notebook analyzing several dataset statistics is provided in `notebooks/FooDI-ML Dataset Stats Analytics.ipynb`.
 
 # Citation
-Please use the following citation when referencing Foodi-ML dataset:
+This paper is under review in NeurIPS 2021. If accepted, we will provide the citation link.
