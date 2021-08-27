@@ -9,6 +9,10 @@ The data made available corresponds to food, drinks and groceries products from 
 The dataset comprehends 33 languages, including 870k samples of languages of countries from Eastern Europe and West Asia such as Ukrainian and Kazakh, which have been so far underrepresented in publicly available visio-linguistic datasets. 
 The dataset also includes widely spoken languages such as Spanish and English.
 
+## License
+
+The FooDI-ML dataset is offered under the [BY-NC-SA license](https://creativecommons.org/licenses/by-nc-sa/2.0/ "BY-NC-SA license").
+
 # 1. Download the dataset
 The FooDI-ML dataset is hosted in a S3 bucket in AWS. Therefore AWS CLI is needed to download it. 
 Our dataset is composed of:
@@ -53,7 +57,8 @@ Our dataset is managed by the DataFrame `glovo-foodi-ml-dataset.csv`. This datas
 * **HIER**: Boolean variable indicating if the store name can be used to retrieve product information (indicating if the store_name is **not** an auxiliary store (with code `AS_XYZ`)).
 * **s3_path**: Path of the image of the product in the disk location you chose. 
 
-# Changelog
+# Dataset Statistics
+A notebook analyzing several dataset statistics is provided in `notebooks/FooDI-ML Dataset Stats Analytics.ipynb`.
 
 # Citation
-Please use the following citation when referencing Foodi-ML dataset:
+This paper is under review in NeurIPS 2021. If accepted, we will provide the citation link.
