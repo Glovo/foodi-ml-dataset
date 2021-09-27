@@ -1,7 +1,7 @@
 import cv2
 
 
-def dhash(image, hashSize=8):
+def dhash(image, hashSize=64):
     """
     Gets the hash of an image. Converts the image to grayscale and resizes
     to hashSize and computes the hash based on image gradient.
