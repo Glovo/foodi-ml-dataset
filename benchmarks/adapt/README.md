@@ -135,10 +135,3 @@ If you find this implementation useful, please consider citing ADAPt's original 
 }
 ```
 
-
-## Poster
-<a name="poster"/>
-
-<p align="center">
-    <img src="assets/adapt_poster.png" width="300"/>
-</p>
