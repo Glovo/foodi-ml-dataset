@@ -62,5 +62,7 @@ A notebook analyzing several dataset statistics is provided in `notebooks/FooDI-
 
 # Benchmark
 To run the benchmark included in the original paper one must follow the procedure listed in the following [link](benchmarks/adapt/README.md).
+
+The hyperparameters of the model are included here [link](options/adapt/foodi-ml/i2t.yaml)
 # Citation
 This paper is under review in NeurIPS 2021. If accepted, we will provide the citation link.
