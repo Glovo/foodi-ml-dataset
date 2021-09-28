@@ -60,5 +60,9 @@ Our dataset is managed by the DataFrame `glovo-foodi-ml-dataset.csv`. This datas
 # Dataset Statistics
 A notebook analyzing several dataset statistics is provided in `notebooks/FooDI-ML Dataset Stats Analytics.ipynb`.
 
+# Benchmark
+To run the benchmark included in the original paper one must follow the procedure listed in the following [link](benchmarks/adapt/README.md).
+
+The hyperparameters of the model are included here [link](options/adapt/foodi-ml/i2t.yaml)
 # Citation
 This paper is under review in NeurIPS 2021. If accepted, we will provide the citation link.
