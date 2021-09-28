@@ -1,0 +1,15 @@
+__include__: 'vsepp.yaml'
+exp:
+  outpath: logs/f30k_precomp.en/vsepp/
+dataset:
+  train:
+    data: f30k_precomp.en
+  val: 
+    data: [f30k_precomp.en]
+  adapt:
+    data: []
+optimizer:
+  lr_scheduler: 
+    params:
+      step_size: 15000
+      gamma: 0.1

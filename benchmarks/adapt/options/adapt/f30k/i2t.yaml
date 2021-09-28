@@ -1,0 +1,27 @@
+__include__: ../abstract.yaml
+exp:
+  outpath: logs/f30k_precomp/adapt_i2t/
+dataset:  
+  vocab_paths: [.vocab_cache/f30k_precomp.json,]
+  train:
+    data: f30k_precomp.en
+    workers: 1
+    batch_size: 128
+  val: 
+    data: [f30k_precomp.en]
+    workers: 1
+    batch_size: 32
+    limit: 5000  
+model:    
+  txt_enc:
+    params:
+      glove_path: '.vocab_cache/glove_f30k_precomp.json.pkl'
+  similarity:
+    name: adapt_i2t
+    params:
+      latent_size: 1024
+      k: 1
+      gamma: 10
+      train_gamma: False
+      device: cuda
+    device: cuda
