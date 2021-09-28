@@ -140,7 +140,7 @@ def evaluate(
         lens=lengths
     )
     # Big data option
-    #sims = model.get_sim_matrix_shared_eval(
+    #sims = model.get_sim_matrix_eval(
     #    embed_a=img_emb, 
     #    embed_b=txt_emb,
     #    lens=lengths
