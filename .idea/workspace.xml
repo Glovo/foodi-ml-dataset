@@ -2,109 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fd21b0e9-5b2d-4954-9265-66b96cfecae7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/foodi-ml-dataset.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/assets/adapt.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/assets/adapt_poster.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/assets/adapt_poster.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/extract_features.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/logs/foodi-ml/adapt_i2t/events.out.tfevents.1632818031.ip-172-16-82-167" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/logs/foodi-ml/adapt_i2t/options.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/notebooks/0_install_requirements.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/notebooks/1_preprocess_sample.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/adapt/.ipynb_checkpoints/abstract-checkpoint.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/adapt/abstract.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/adapt/coco/i2t.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/adapt/coco/t2i.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/adapt/f30k/i2t.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/adapt/f30k/t2i.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/adapt/foodi-ml/.ipynb_checkpoints/i2t-checkpoint.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/adapt/foodi-ml/i2t.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/adapt/latent_size/adapt_t2i_l1024.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/adapt/latent_size/adapt_t2i_l128.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/adapt/latent_size/adapt_t2i_l1280.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/adapt/latent_size/adapt_t2i_l1536.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/adapt/latent_size/adapt_t2i_l256.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/adapt/latent_size/adapt_t2i_l512.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/adapt/latent_size/adapt_t2i_l64.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/adapt/latent_size/adapt_t2i_l768.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/scan-t2i/coco.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/scan-t2i/f30k.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/scan-t2i/scan.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/vsepp/coco.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/vsepp/f30k.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/options/vsepp/vsepp.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/params.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/results/.ipynb_checkpoints/print_result-checkpoint.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/results/print_result.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/data/.ipynb_checkpoints/adapters-checkpoint.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/data/.ipynb_checkpoints/datasets-checkpoint.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/data/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/data/adapters.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/data/collate_fns.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/data/dataiterator.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/data/datasets.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/data/loaders.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/data/preprocessing.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/data/tokenizer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/.ipynb_checkpoints/model-checkpoint.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/data_parallel.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/imgenc/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/imgenc/common.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/imgenc/factory.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/imgenc/fullencoder.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/imgenc/pooling.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/imgenc/precomp.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/layers/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/layers/adapt.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/layers/attention.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/layers/convblocks.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/loss.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/similarity/.ipynb_checkpoints/measure-checkpoint.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/similarity/.ipynb_checkpoints/similarity-checkpoint.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/similarity/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/similarity/factory.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/similarity/measure.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/similarity/similarity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/txtenc/.ipynb_checkpoints/embedding-checkpoint.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/txtenc/.ipynb_checkpoints/factory-checkpoint.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/txtenc/.ipynb_checkpoints/txtenc-checkpoint.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/txtenc/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/txtenc/embedding.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/txtenc/factory.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/txtenc/pooling.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/model/txtenc/txtenc.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/train/.ipynb_checkpoints/evaluation-checkpoint.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/train/.ipynb_checkpoints/train-checkpoint.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/train/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/train/evaluation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/train/lr_scheduler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/train/optimizers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/train/test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/train/train.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/utils/.ipynb_checkpoints/helper-checkpoint.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/utils/.ipynb_checkpoints/logger-checkpoint.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/utils/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/utils/file_utils.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/utils/helper.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/utils/layers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/utils/logger.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/retrieval/utils/options.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/run.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/test_ens.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/tmp/lengths.npy" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarks/adapt/vocab/align_vocab.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/adapt/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/adapt/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,6 +24,7 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="JupyterTrust" id="57b60d09-8369-4633-a808-f2d1c371a394" />
   <component name="ProjectId" id="1xFsAJAH1yxbrZNAy8TESMAIsnT" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">

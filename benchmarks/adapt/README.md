@@ -1,13 +1,15 @@
-# Adaptive Cross-modal Embeddings for Image-Text Alignment (ADAPT)
+# Adaptive Cross-modal Embeddings for Image-Text Alignment (ADAPT) - FooDI-ML dataset adaptation
 
-This code implements a novel approach for training image-text alignment models, namely ADAPT.
+This code implements a novel approach for training image-text alignment models, namely ADAPT. Forked from the original code here: https://github.com/jwehrmann/retrieval.pytorch.
 
+
+The code included here includes a mod to be able to run ADAPT for very large image datasets. Essentially, we move some logic in the evaluation scripts so that the matrices supported by GPU training are less intensive.
 <p align="center">
     <img src="assets/adapt.png" width="700"/>
 </p>
 <!-- future link: https://github.com/jwehrmann/retrieval.pytorch/assets/adapt.png -->
 
-ADAPT is designed to adjust an intermediate representation of instances from a modality _a_ using an embedding vector of an instance from modality _b_. Such an adaptation is designed to filter and enhance important information across internal features, allowing for guided vector representations – which resembles the working of attention modules, though far more computationally efficient. For further information, please read our [AAAI 2020 paper](https://www.researchgate.net/publication/337636199_Adaptive_Cross-modal_Embeddings_for_Image-Text_Alignment).
+ADAPT is designed to adjust an intermediate representation of instances from a modality _a_ using an embedding vector of an instance from modality _b_. Such an adaptation is designed to filter and enhance important information across internal features, allowing for guided vector representations – which resembles the working of attention modules, though far more computationally efficient. For further information, please read ADAPT's original paper [AAAI 2020 paper](https://www.researchgate.net/publication/337636199_Adaptive_Cross-modal_Embeddings_for_Image-Text_Alignment).
 
 
 
@@ -122,7 +124,7 @@ We make available all the main models generated in this research. Each file has 
 ## Citation
 <a name="citation"/>
 
-If you find this research or code useful, please consider citing our paper:
+If you find this implementation useful, please consider citing ADAPt's original paper:
 
 ```
 @article{wehrmanna2020daptive,
