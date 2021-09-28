@@ -48,7 +48,7 @@ python run.py options/adapt/foodi-ml/i2t.yaml
 The generated metrics are reported in the validation set because no hyperparameter tuning was performed.
 
 
-## Citation
+## Citation (for ADAPT)
 <a name="citation"/>
 
 This is a modification from the original work ADAPT.
