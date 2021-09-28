@@ -121,7 +121,7 @@ We make available all the main models generated in this research. Each file has 
 | COCO | [ADAPT-i2t](https://wehrmann.s3-us-west-2.amazonaws.com/adapt_models/coco_adapt_i2t.tar) | 67.2%    | 57.8%   | 
 | COCO | ADAPT-ens | 75.3%    | 64.4%   | 
 
-## Citation
+## Citation (for ADAPT)
 <a name="citation"/>
 
 If you find this implementation useful, please consider citing ADAPt's original paper:
