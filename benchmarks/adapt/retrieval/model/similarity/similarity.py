@@ -355,8 +355,10 @@ class AdaptiveEmbeddingI2T(nn.Module):
 
         
         for i, img_tensor in enumerate(img_embed):
-            img_vector = img_tensor.unsqueeze(0) # 1, 2048
-            txt_vector = cap_embed[i].unsqueeze(0)
+            #img_vector = img_tensor.unsqueeze(0) # 1, 2048
+            img_vector = np.expand_dims(img_tensor,0)
+            #txt_vector = cap_embed[i].unsqueeze(0)
+            txt_vector = np.expand_dims(cap_embed[i],0)
             txt_vector = l2norm_numpy(txt_vector, dim=-1)
             img_vector = l2norm_numpy(img_vector, dim=-1)
             sim = cosine_sim_numpy(img_vector, txt_vector)
