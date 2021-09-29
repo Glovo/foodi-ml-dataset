@@ -93,18 +93,7 @@ class Similarity(nn.Module):
         #img_embed = img_embed.to(self.device)
         #cap_embed = cap_embed.to(self.device)
 
-        n_im_shard = (len(img_embed)-1)//shared_size + 1
-        n_cap_shard = (len(cap_embed)-1)//shared_size + 1
-
         logger.debug('Calculating shared similarities')
-
-        pbar_fn = lambda x: range(x)
-        if self.master:
-            pbar_fn = lambda x: tqdm(
-                range(x), total=x,
-                desc='Test  ',
-                leave=False,
-            )
         
         d = torch.zeros(len(img_embed), len(cap_embed)).cpu()
         cap_embed = l2norm(cap_embed, dim=-1)
