@@ -15,7 +15,7 @@ from ..layers import attention, adapt
 from ..txtenc.pooling import mean_pooling
 from ..txtenc import pooling
 from ..txtenc import factory
-from .measure import cosine_sim, l2norm
+from .measure import cosine_sim, l2norm, l2norm_numpy, cosine_sim_numpy
 
 logger = get_logger()
 
@@ -347,19 +347,19 @@ class AdaptiveEmbeddingI2T(nn.Module):
         #cap_embed = cap_embed.permute(0, 2, 1)
         #if LT != self.latent_size:
         #    img_embed = img_embed.permute(0, 2, 1)
-
-        sims = torch.zeros(
+        img_embed=img_embed.numpy()
+        sims = np.zeros(
             img_embed.shape[0], cap_embed.shape[0]
         )
-        sims = sims.to(self.device)
+        #sims = sims.to(self.device)
 
         
         for i, img_tensor in enumerate(img_embed):
             img_vector = img_tensor.unsqueeze(0) # 1, 2048
             txt_vector = cap_embed[i].unsqueeze(0)
-            txt_vector = l2norm(txt_vector, dim=-1)
-            img_vector = l2norm(img_vector, dim=-1)
-            sim = cosine_sim(img_vector, txt_vector)
+            txt_vector = l2norm_numpy(txt_vector, dim=-1)
+            img_vector = l2norm_numpy(img_vector, dim=-1)
+            sim = cosine_sim_numpy(img_vector, txt_vector)
             sim = sim.squeeze(-1)
             sims[i,:] = sim
 
