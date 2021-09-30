@@ -15,7 +15,7 @@ from ..layers import attention, adapt
 from ..txtenc.pooling import mean_pooling
 from ..txtenc import pooling
 from ..txtenc import factory
-from .measure import cosine_sim, l2norm
+from .measure import cosine_sim, l2norm, l2norm_numpy, cosine_sim_numpy
 
 logger = get_logger()
 
@@ -40,7 +40,7 @@ class Similarity(nn.Module):
         ))
 
         return self.similarity(img_embed, cap_embed, lens)
-    
+
     def forward_eval(self, img_embed, cap_embed, lens, shared=False):
         logger.debug((
             f'Similarity - img_shape: {img_embed.shape} '
@@ -48,17 +48,21 @@ class Similarity(nn.Module):
         ))
 
         return self.similarity.forward_eval(img_embed, cap_embed, lens)
-    
 
     def forward_shared(self, img_embed, cap_embed, lens, shared_size=128):
         """
         Compute pairwise i2t image-caption distance with locality sharding
         """
 
-        #img_embed = img_embed.to(self.device)
-        #cap_embed = cap_embed.to(self.device)
-        n_im_shard = (len(img_embed)-1)//shared_size + 1
-        n_cap_shard = (len(cap_embed)-1)//shared_size + 1
+        # img_embed = img_embed.to(self.device)
+        # cap_embed = cap_embed.to(self.device)
+        # print("----------forward_shared-----------")
+        # print("img_embed.size(): ", img_embed.size())
+        # print("cap_embed.size(): ", cap_embed.size())
+        n_im_shard = (len(img_embed) - 1) // shared_size + 1
+        n_cap_shard = (len(cap_embed) - 1) // shared_size + 1
+        # print("n_im_shard: ", n_im_shard)
+        # print("n_cap_shard: ", n_cap_shard)
         logger.debug('Calculating shared similarities')
 
         pbar_fn = lambda x: range(x)
@@ -70,51 +74,53 @@ class Similarity(nn.Module):
             )
 
         d = torch.zeros(len(img_embed), len(cap_embed)).cpu()
+        # print("dimension of d: ", d.size())
         for i in pbar_fn(n_im_shard):
-            im_start = shared_size*i
-            im_end = min(shared_size*(i+1), len(img_embed))
+            im_start = shared_size * i
+            im_end = min(shared_size * (i + 1), len(img_embed))
+
             for j in range(n_cap_shard):
-                cap_start = shared_size*j
-                cap_end = min(shared_size*(j+1), len(cap_embed))
+                cap_start = shared_size * j
+                cap_end = min(shared_size * (j + 1), len(cap_embed))
                 im = img_embed[im_start:im_end]
                 s = cap_embed[cap_start:cap_end]
                 l = lens[cap_start:cap_end]
                 sim = self.forward(im, s, l)
                 d[im_start:im_end, cap_start:cap_end] = sim
+            # print(d)
 
         logger.debug('Done computing shared similarities.')
         return d
-    
+
     def forward_shared_eval(self, img_embed, cap_embed, lens, shared_size=128):
         """
         Compute pairwise i2t image-caption distance with locality sharding
         """
-
-        #img_embed = img_embed.to(self.device)
-        #cap_embed = cap_embed.to(self.device)
-
         logger.debug('Calculating shared similarities')
-        
-        d = torch.zeros(len(img_embed), len(cap_embed)).cpu()
-        cap_embed = l2norm(cap_embed, dim=-1)
+        img_embed = img_embed.cpu().numpy()
+        cap_embed = cap_embed.cpu().numpy()
+        cap_embed = l2norm_numpy(cap_embed, dim=-1)
+        d = np.zeros((len(img_embed), len(cap_embed)), dtype=np.float)
+        l = len(img_embed)
         for i, img_tensor in enumerate(img_embed):
-            img_vector = img_tensor.unsqueeze(0)
-            img_vector = l2norm(img_vector, dim=-1)
-            sim = cosine_sim(img_vector, cap_embed)
-            sim = sim.squeeze(-1)
-            d[i,:] = sim
-        
+            img_vector = np.expand_dims(img_tensor, 0)
+            img_vector = l2norm_numpy(img_vector, dim=-1)
+            txt_vector = np.expand_dims(cap_embed, 0)
+            sim = cosine_sim_numpy(img_vector, cap_embed)
+            d[i, :] = sim
+
         logger.debug('Done computing shared similarities.')
         return d
 
+
 class Similarity_Ev(Similarity):
-        
+
     def forward(self, img_embed, cap_embed, lens, shared=False):
         logger.debug((
             f'Similarity - img_shape: {img_embed.shape} '
             'cap_shape: {cap_embed.shape}'
         ))
-        print(self.similarity)
+        # print(self.similarity)
         return self.similarity(img_embed, cap_embed, lens)
 
     def forward_shared(self, img_embed, cap_embed, lens, shared_size=128):
@@ -122,11 +128,11 @@ class Similarity_Ev(Similarity):
         Compute pairwise i2t image-caption distance with locality sharding
         """
 
-        #img_embed = img_embed.to(self.device)
-        #cap_embed = cap_embed.to(self.device)
+        # img_embed = img_embed.to(self.device)
+        # cap_embed = cap_embed.to(self.device)
 
-        n_im_shard = (len(img_embed)-1)//shared_size + 1
-        n_cap_shard = (len(cap_embed)-1)//shared_size + 1
+        n_im_shard = (len(img_embed) - 1) // shared_size + 1
+        n_cap_shard = (len(cap_embed) - 1) // shared_size + 1
 
         logger.debug('Calculating shared similarities')
 
@@ -140,11 +146,11 @@ class Similarity_Ev(Similarity):
 
         d = torch.zeros(len(img_embed), len(cap_embed)).cpu()
         for i in pbar_fn(n_im_shard):
-            im_start = shared_size*i
-            im_end = min(shared_size*(i+1), len(img_embed))
+            im_start = shared_size * i
+            im_end = min(shared_size * (i + 1), len(img_embed))
             for j in range(n_cap_shard):
-                cap_start = shared_size*j
-                cap_end = min(shared_size*(j+1), len(cap_embed))
+                cap_start = shared_size * j
+                cap_end = min(shared_size * (j + 1), len(cap_embed))
                 im = img_embed[im_start:im_end]
                 s = cap_embed[cap_start:cap_end]
                 l = lens[cap_start:cap_end]
@@ -153,6 +159,8 @@ class Similarity_Ev(Similarity):
 
         logger.debug('Done computing shared similarities.')
         return d
+
+
 class Cosine(nn.Module):
 
     def __init__(self, device, latent_size=1024):
@@ -166,7 +174,7 @@ class Cosine(nn.Module):
         img_embed = l2norm(img_embed, dim=1)
         cap_embed = l2norm(cap_embed, dim=1)
 
-        return cosine_sim(img_embed, cap_embed)#.cpu()
+        return cosine_sim(img_embed, cap_embed)  # .cpu()
 
 
 class Fovea(nn.Module):
@@ -210,6 +218,7 @@ class Normalization(nn.Module):
     def forward(self, x):
         return self.norm(x)
 
+
 # FIND
 class AdaptiveEmbeddingT2I(nn.Module):
 
@@ -217,7 +226,7 @@ class AdaptiveEmbeddingT2I(nn.Module):
             self, device, latent_size=1024, k=1,
             gamma=10, train_gamma=False, clip_embeddings=True,
             normalization='batchnorm', use_fovea=True
-        ):
+    ):
         super().__init__()
 
         self.device = device
@@ -254,7 +263,7 @@ class AdaptiveEmbeddingT2I(nn.Module):
 
             # Global textual representation
             # cap_vector: 1, 1024
-            cap_repr = cap_tensor[:,:n_words].mean(-1).unsqueeze(0)
+            cap_repr = cap_tensor[:, :n_words].mean(-1).unsqueeze(0)
 
             img_output = self.adapt_img(img_embed, cap_repr)
             img_output = self.fovea(img_output)
@@ -268,19 +277,18 @@ class AdaptiveEmbeddingT2I(nn.Module):
             sim = cosine_sim(img_vector, cap_vector).squeeze(-1)
 
             # sim = sim.squeeze(-1)
-            sims[:,i] = sim
+            sims[:, i] = sim
 
         return sims
 
-    
-    
+
 class AdaptiveEmbeddingI2T(nn.Module):
 
     def __init__(
             self, device, latent_size=1024, k=1,
             gamma=1, train_gamma=False,
             normalization='batchnorm', use_fovea=True
-        ):
+    ):
         super().__init__()
 
         self.device = device
@@ -303,6 +311,11 @@ class AdaptiveEmbeddingI2T(nn.Module):
         '''
         # (B, 1024, T)
         #
+        # print("max len: ", max(lens))
+        # print("cap_embed: ", cap_embed.size())
+        cap_batch_size, cap_num_words, cap_emb_dim = cap_embed.size()
+        cap_embed = cap_embed[:, :min(200, cap_num_words), :]
+
         BB, LT, KK = img_embed.shape
         cap_embed = cap_embed.permute(0, 2, 1)
         if LT != self.latent_size:
@@ -324,18 +337,22 @@ class AdaptiveEmbeddingI2T(nn.Module):
 
             img_vector = img_tensor.unsqueeze(0)
             txt_output = self.adapt_txt(value=cap_embed, query=img_vector)
+            # print("txt_output.size(): ", txt_output.size())
             txt_output = self.fovea(txt_output)
-            
+            # print("txt_output.size() after fovea: ", txt_output.size())
+
             txt_vector = txt_output.max(dim=-1)[0]
+            # print("txt_vector.size(): ", txt_vector.size())
 
             txt_vector = l2norm(txt_vector, dim=-1)
             img_vector = l2norm(img_vector, dim=-1)
             sim = cosine_sim(img_vector, txt_vector)
             sim = sim.squeeze(-1)
-            sims[i,:] = sim
 
+            sims[i, :] = sim
+        # print("sims.size(): ", sims.size())
         return sims
-    
+
     def forward_eval(self, img_embed, cap_embed, lens, **kwargs):
         '''
             img_embed: (B, 36, latent_size)
@@ -343,9 +360,9 @@ class AdaptiveEmbeddingI2T(nn.Module):
         '''
         # (B, 1024, T)
         #
-        #BB, LT, KK = img_embed.shape
-        #cap_embed = cap_embed.permute(0, 2, 1)
-        #if LT != self.latent_size:
+        # BB, LT, KK = img_embed.shape
+        # cap_embed = cap_embed.permute(0, 2, 1)
+        # if LT != self.latent_size:
         #    img_embed = img_embed.permute(0, 2, 1)
 
         sims = torch.zeros(
@@ -353,15 +370,25 @@ class AdaptiveEmbeddingI2T(nn.Module):
         )
         sims = sims.to(self.device)
 
-        
+        # Global image representation
+        # img_embed = img_embed.mean(-1)
+        # print("forward eval ----------------")
+        # print("img_embed.size(): ", img_embed.size())
+        # print("cap_emb.size(): ", cap_embed.size())
         for i, img_tensor in enumerate(img_embed):
-            img_vector = img_tensor.unsqueeze(0) # 1, 2048
+            img_vector = img_tensor.unsqueeze(0)  # 1, 2048
             txt_vector = cap_embed[i].unsqueeze(0)
+            # print("img_vector.size(): ", img_vector.size())
+            # print("txt_vector.size(): ", txt_vector.size())
             txt_vector = l2norm(txt_vector, dim=-1)
             img_vector = l2norm(img_vector, dim=-1)
+            # print("img_vector.size(): ", img_vector.size())
+            # print("txt_vector.size(): ", txt_vector.size())
+
             sim = cosine_sim(img_vector, txt_vector)
             sim = sim.squeeze(-1)
-            sims[i,:] = sim
+            # print(sim)
+            sims[i, :] = sim
 
         return sims
 
@@ -372,7 +399,7 @@ class AdaptiveEmbeddingI2T_eval(nn.Module):
             self, device, latent_size=1024, k=1,
             gamma=1, train_gamma=False,
             normalization='batchnorm', use_fovea=True
-        ):
+    ):
         print('new similarity class initialised')
         super().__init__()
 
@@ -425,7 +452,7 @@ class AdaptiveEmbeddingI2T_eval(nn.Module):
             img_vector = l2norm(img_vector, dim=-1)
             sim = cosine_sim(img_vector, txt_vector)
             sim = sim.squeeze(-1)
-            sims[i,:] = sim
+            sims[i, :] = sim
 
         return sims
 
@@ -437,7 +464,7 @@ class LogSumExp(nn.Module):
     def forward(self, x):
         x.mul_(self.lambda_lse).exp_()
         x = x.sum(dim=1, keepdim=True)
-        x = torch.log(x)/self.lambda_lse
+        x = torch.log(x) / self.lambda_lse
         return x
 
 
@@ -453,9 +480,9 @@ class ClippedL2Norm(nn.Module):
 class StackedAttention(nn.Module):
 
     def __init__(
-        self, i2t=True, agg_function='Mean',
-        feature_norm='softmax', lambda_lse=None,
-        smooth=4, **kwargs,
+            self, i2t=True, agg_function='Mean',
+            feature_norm='softmax', lambda_lse=None,
+            smooth=4, **kwargs,
     ):
         super().__init__()
         self.i2t = i2t
@@ -538,10 +565,9 @@ class StackedAttention(nn.Module):
         )
 
 
-
 def attn_softmax(attn):
     batch_size, sourceL, queryL = attn.shape
-    attn = attn.view(batch_size*sourceL, queryL)
+    attn = attn.view(batch_size * sourceL, queryL)
     attn = nn.Softmax(dim=-1)(attn)
     # --> (batch, sourceL, queryL)
     attn = attn.view(batch_size, sourceL, queryL)
@@ -577,7 +603,7 @@ class Attention(nn.Module):
         batch_size_q, queryL = query.size(0), query.size(1)
         batch_size, sourceL = context.size(0), context.size(1)
 
-         # Get attention
+        # Get attention
         # --> (batch, d, queryL)
         queryT = torch.transpose(query, 1, 2)
 
@@ -588,8 +614,8 @@ class Attention(nn.Module):
         # --> (batch, queryL, sourceL)
         attn = torch.transpose(attn, 1, 2).contiguous()
         # --> (batch*queryL, sourceL)
-        attn = attn.view(batch_size*queryL, sourceL)
-        attn = nn.Softmax(dim=-1)(attn*self.smooth)
+        attn = attn.view(batch_size * queryL, sourceL)
+        attn = nn.Softmax(dim=-1)(attn * self.smooth)
         # --> (batch, queryL, sourceL)
         attn = attn.view(batch_size, queryL, sourceL)
         # --> (batch, sourceL, queryL)
