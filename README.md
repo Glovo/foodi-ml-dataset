@@ -65,4 +65,4 @@ To run the benchmark included in the original paper one must follow the procedur
 
 The hyperparameters of the model are included here [link](benchmarks/adapt/options/adapt/foodi-ml/i2t.yaml)
 # Citation
-This paper is under review in NeurIPS 2021. If accepted, we will provide the citation link.
+This paper is under review. In the meanwhile you can cite it in arxiv: https://arxiv.org/abs/2110.02035
