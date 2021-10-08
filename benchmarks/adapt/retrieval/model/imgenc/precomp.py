@@ -1,13 +1,12 @@
 from collections import OrderedDict
 
+import numpy as np
 import torch
 import torch.nn as nn
 
 from ...utils.layers import default_initializer
-from ..similarity.measure import l1norm, l2norm
 from ..layers import attention, convblocks
-
-import numpy as np
+from ..similarity.measure import l1norm, l2norm
 
 
 def load_state_dict_with_replace(state_dict, own_state):

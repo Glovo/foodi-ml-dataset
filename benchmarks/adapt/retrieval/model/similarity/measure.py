@@ -1,5 +1,6 @@
-import torch
 import numpy as np
+import torch
+
 
 def l1norm(X, dim, eps=1e-8):
     """L1-normalize columns of X

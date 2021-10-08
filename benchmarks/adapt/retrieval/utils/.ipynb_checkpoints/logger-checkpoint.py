@@ -1,5 +1,5 @@
-from collections import OrderedDict
 import logging
+from collections import OrderedDict
 
 
 class AverageMeter(object):

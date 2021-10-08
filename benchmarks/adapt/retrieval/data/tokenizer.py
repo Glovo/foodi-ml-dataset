@@ -2,14 +2,12 @@ import json
 import logging
 from collections import Counter
 
+import nltk
 import torch
 from tqdm import tqdm
 
-import nltk
-
-from ..utils.logger import get_logger
 from ..utils.file_utils import read_txt
-
+from ..utils.logger import get_logger
 
 logger = get_logger()
 

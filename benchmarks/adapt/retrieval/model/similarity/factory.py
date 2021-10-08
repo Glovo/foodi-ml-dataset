@@ -1,7 +1,7 @@
 # TODO: improve this
-from . import similarity as sim
 from addict import Dict
 
+from . import similarity as sim
 
 _similarities = {
     'cosine': {

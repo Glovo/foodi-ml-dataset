@@ -1,6 +1,6 @@
+import numpy as np
 import torch
 import torch.nn as nn
-import numpy as np
 
 
 def adjust_k(epoch, initial_k, increase_k, max_violation=False):

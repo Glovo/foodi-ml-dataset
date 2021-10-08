@@ -1,19 +1,22 @@
 import os
-import torch
 import pickle
+
 import boto3
 import numpy as np
-from PIL import Image
 import PIL
+import torch
+from PIL import Image
+
 PIL.Image.LOAD_TRUNCATED_IMAGES = True # Otherwise we got ValueError: Decompressed data too large
-from addict import Dict
+import io
 from pathlib import Path
+
+from addict import Dict
 from torch.utils.data import Dataset
 from torchvision.datasets.folder import default_loader
-import io
 
+from ..utils.file_utils import load_pickle, read_txt
 from ..utils.logger import get_logger
-from ..utils.file_utils import read_txt, load_pickle
 from .preprocessing import get_transform
 
 logger = get_logger()

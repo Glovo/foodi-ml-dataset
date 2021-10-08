@@ -1,4 +1,5 @@
 import os
+
 import torch
 from tensorboardX import SummaryWriter
 
@@ -56,8 +57,9 @@ def save_checkpoint_foodi(
 
 def load_model(path):
 
-    from .. import model
     from addict import Dict
+
+    from .. import model
     from ..data.tokenizer import Tokenizer
 
     checkpoint = torch.load(

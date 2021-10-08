@@ -1,14 +1,14 @@
-import torch
-import numpy as np
 from pathlib import Path
 
+import numpy as np
+import torch
 from params import get_test_params
-from retrieval.train import evaluation
 from retrieval.data.loaders import get_loader
+from retrieval.train import evaluation
+from retrieval.utils.file_utils import (load_yaml_opts, parse_loader_name,
+                                        save_json)
 from retrieval.utils.logger import create_logger
-from run import load_model, get_data_path, get_tokenizers
-from retrieval.utils.file_utils import save_json, load_yaml_opts, parse_loader_name
-
+from run import get_data_path, get_tokenizers, load_model
 
 if __name__ == '__main__':
     args = get_test_params(ensemble=True)

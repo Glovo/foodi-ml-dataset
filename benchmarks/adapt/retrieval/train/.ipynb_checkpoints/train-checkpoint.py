@@ -1,20 +1,19 @@
 import os
-import torch
 import random
-import numpy as np
-from tqdm import tqdm
-from addict import Dict
 from pathlib import Path
 from timeit import default_timer as dt
 
-from torch.utils.data import dataset
+import numpy as np
+import torch
+from addict import Dict
 from torch.nn.utils.clip_grad import clip_grad_norm_
+from torch.utils.data import dataset
+from tqdm import tqdm
 
-from . import evaluation
-from . import optimizers
-from .lr_scheduler import get_scheduler
 from ..data.dataiterator import DataIterator
-from ..utils import helper, logger, file_utils
+from ..utils import file_utils, helper, logger
+from . import evaluation, optimizers
+from .lr_scheduler import get_scheduler
 
 torch.manual_seed(0)
 random.seed(0, version=2)

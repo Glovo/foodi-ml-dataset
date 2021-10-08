@@ -11,11 +11,10 @@ from tqdm import tqdm
 from ...utils import helper
 from ...utils.logger import get_logger
 from .. import txtenc
-from ..layers import attention, adapt
+from ..layers import adapt, attention
+from ..txtenc import factory, pooling
 from ..txtenc.pooling import mean_pooling
-from ..txtenc import pooling
-from ..txtenc import factory
-from .measure import cosine_sim, l2norm, l2norm_numpy, cosine_sim_numpy
+from .measure import cosine_sim, cosine_sim_numpy, l2norm, l2norm_numpy
 
 logger = get_logger()
 

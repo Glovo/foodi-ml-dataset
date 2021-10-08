@@ -1,1 +1,1 @@
-from .factory import get_image_encoder, get_available_imgenc, get_img_pooling
+from .factory import get_available_imgenc, get_image_encoder, get_img_pooling

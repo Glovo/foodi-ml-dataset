@@ -1,17 +1,17 @@
 import os
-import torch
-from tqdm import tqdm
 
 import params
-from retrieval.train import train
-from retrieval.utils import helper
+import torch
+from PIL import PngImagePlugin
+from retrieval.data.loaders import get_loaders
 from retrieval.model import loss
 from retrieval.model.model import Retrieval
-from retrieval.data.loaders import get_loaders
-from retrieval.utils.logger import create_logger
-from retrieval.utils.helper import load_model
+from retrieval.train import train
+from retrieval.utils import helper
 from retrieval.utils.file_utils import load_yaml_opts, parse_loader_name
-from PIL import PngImagePlugin
+from retrieval.utils.helper import load_model
+from retrieval.utils.logger import create_logger
+from tqdm import tqdm
 
 
 def get_data_path(opt):

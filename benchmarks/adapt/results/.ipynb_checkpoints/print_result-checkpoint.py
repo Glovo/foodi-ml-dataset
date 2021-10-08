@@ -2,10 +2,12 @@
 find ../logs/ -name *json -print0 | xargs -0 python print_result.py
 '''
 import sys
+
 sys.path.append('../')
 
-from retrieval.utils.file_utils import load_json
 from collections import defaultdict
+
+from retrieval.utils.file_utils import load_json
 
 files = sys.argv[1:]
 

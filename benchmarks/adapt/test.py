@@ -1,18 +1,17 @@
 import os
 import sys
-import torch
-from tqdm import tqdm
 from pathlib import Path
 
 import params
-from run import load_model, get_tokenizers
+import torch
 from retrieval.data.loaders import get_loader
 from retrieval.model import model
 from retrieval.train.train import Trainer
 from retrieval.utils import file_utils, helper
 from retrieval.utils.logger import create_logger
-from run import load_yaml_opts, parse_loader_name, get_data_path
-
+from run import (get_data_path, get_tokenizers, load_model, load_yaml_opts,
+                 parse_loader_name)
+from tqdm import tqdm
 
 if __name__ == '__main__':
     args = params.get_test_params()

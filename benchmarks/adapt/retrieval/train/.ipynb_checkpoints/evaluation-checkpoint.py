@@ -1,7 +1,8 @@
-import torch
-import numpy as np
-from tqdm import tqdm
 from timeit import default_timer as dt
+
+import numpy as np
+import torch
+from tqdm import tqdm
 
 from ..utils import layers
 

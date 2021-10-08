@@ -1,13 +1,10 @@
 import torch
+from retrieval.utils.file_utils import load_yaml_opts, parse_loader_name
 from torch.utils.data import DataLoader
 
-from . import datasets
-from . import collate_fns
-from .tokenizer import Tokenizer
 from ..utils.logger import get_logger
-
-from retrieval.utils.file_utils import load_yaml_opts, parse_loader_name
-
+from . import collate_fns, datasets
+from .tokenizer import Tokenizer
 
 logger = get_logger()
 

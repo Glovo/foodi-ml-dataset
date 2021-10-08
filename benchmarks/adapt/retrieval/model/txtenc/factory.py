@@ -1,11 +1,9 @@
-from . import txtenc
-from . import embedding
-from . import pooling
-import torch.nn as nn
-
-import torch
 import math
 
+import torch
+import torch.nn as nn
+
+from . import embedding, pooling, txtenc
 
 __text_encoders__ = {
     'gru': {

@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
-from ..layers import convblocks
-from ..layers import attention
+
+from ..layers import attention, convblocks
 
 
 class PartialConcat(nn.Module):

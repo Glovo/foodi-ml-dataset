@@ -1,12 +1,13 @@
 import sys
-import torch
+
 import numpy as np
+import torch
 from tqdm import tqdm
 
 sys.path.append('../')
+from params import get_vocab_alignment_params
 from retrieval.data.tokenizer import Tokenizer
 from retrieval.utils.logger import create_logger
-from params import get_vocab_alignment_params
 
 
 def loadEmbModel(embFile, logger):

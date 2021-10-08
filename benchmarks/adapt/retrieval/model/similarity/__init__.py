@@ -1,3 +1,1 @@
-from . import similarity
-from . import measure
-from . import factory
+from . import factory, measure, similarity
