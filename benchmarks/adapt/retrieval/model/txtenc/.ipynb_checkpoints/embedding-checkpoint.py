@@ -1,8 +1,10 @@
+import pickle
+
 import torch
 import torch.nn as nn
-from ..layers import convblocks
-from ..layers import attention
-import pickle
+
+from ..layers import attention, convblocks
+
 
 class PartialConcat(nn.Module):
 

@@ -1,15 +1,14 @@
 import os
+
 import torch
-from tqdm import tqdm
-
 from params import get_extractfeats_params
-from retrieval.data.loaders import get_loader
-from run import load_model, get_data_path, get_tokenizers
-from retrieval.utils.logger import create_logger
-from retrieval.model.similarity.measure import l2norm
 from retrieval.data.collate_fns import default_padding
-from retrieval.utils.file_utils import load_yaml_opts, load_pickle
-
+from retrieval.data.loaders import get_loader
+from retrieval.model.similarity.measure import l2norm
+from retrieval.utils.file_utils import load_pickle, load_yaml_opts
+from retrieval.utils.logger import create_logger
+from run import get_data_path, get_tokenizers, load_model
+from tqdm import tqdm
 
 if __name__ == '__main__':
     args = get_extractfeats_params()

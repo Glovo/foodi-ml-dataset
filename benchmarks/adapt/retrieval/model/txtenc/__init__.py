@@ -1,2 +1,2 @@
-from .factory import get_text_encoder, get_available_txtenc, get_txt_pooling
 from . import embedding
+from .factory import get_available_txtenc, get_text_encoder, get_txt_pooling

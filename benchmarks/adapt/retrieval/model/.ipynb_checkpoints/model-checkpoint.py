@@ -1,13 +1,11 @@
 import torch
 import torch.nn as nn
 
-from . import data_parallel
 from ..utils.logger import get_logger
+from . import data_parallel
 from .imgenc import get_image_encoder, get_img_pooling
 from .similarity.factory import get_similarity_object
-from .similarity.similarity import Similarity
-from .similarity.similarity import Similarity_Ev
-
+from .similarity.similarity import Similarity, Similarity_Ev
 from .txtenc import get_text_encoder, get_txt_pooling
 
 logger = get_logger()

@@ -1,2 +1,1 @@
-from . import attention
-from . import convblocks
+from . import attention, convblocks

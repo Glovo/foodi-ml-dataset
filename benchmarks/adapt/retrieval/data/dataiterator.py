@@ -1,6 +1,5 @@
-from .loaders import prepare_ml_data
 from ..utils.logger import get_logger
-
+from .loaders import prepare_ml_data
 
 logger = get_logger()
 

@@ -37,11 +37,11 @@ model:
 optimizer:
   name: adamax
   params:
-    lr: 0.001 # 7e-4
+    lr: 0.0001
     gradual_warmup_steps: [0.5, 2.0, 4000] #torch.linspace
     lr_decay_epochs: [10000, 20000, 3000] #range
     lr_decay_rate: .25
-  lr_scheduler: 
+  lr_scheduler:
     name: null
     params:
       step_size: 1000
@@ -52,8 +52,8 @@ criterion:
   max_violation: False
   beta: 0.991
 engine:
-  eval_before_training: False  
-  print_freq: 25
+  eval_before_training: False
+  print_freq: 300 #6000
   nb_epochs: 50
   early_stop: 20
-  valid_interval: 235 # before 5, after each epoch
+  valid_interval: 65000

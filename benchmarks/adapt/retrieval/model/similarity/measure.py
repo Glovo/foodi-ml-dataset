@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 
 
@@ -8,7 +9,6 @@ def l1norm(X, dim, eps=1e-8):
     X = torch.div(X, norm)
     return X
 
-
 def l2norm(X, dim, eps=1e-8):
     """L2-normalize columns of X
     """
@@ -18,6 +18,14 @@ def l2norm(X, dim, eps=1e-8):
     X = torch.div(X, norm)
     return X
 
+def l2norm_numpy(X, dim, eps=1e-8):
+    """L2-normalize columns of X
+    """
+    norm = np.sqrt(np.power(X, 2).sum(
+        axis=dim, keepdims=True
+    )) + eps
+    X = np.true_divide(X, norm)
+    return X
 
 def cosine_sim(im, s,):
     """
@@ -26,11 +34,9 @@ def cosine_sim(im, s,):
     """
     return im.mm(s.t())
 
-
 def cosine_sim_numpy(im, s):
     """
         Cosine similarity between all the
         image and sentence pairs
     """
     return im.dot(s.T)
-

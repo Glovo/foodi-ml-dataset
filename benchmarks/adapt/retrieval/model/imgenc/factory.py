@@ -1,8 +1,6 @@
-from . import precomp
-from . import fullencoder
-from . import pooling
 import torchvision
 
+from . import fullencoder, pooling, precomp
 
 _image_encoders = {
     'simple': {

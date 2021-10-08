@@ -1,14 +1,14 @@
-import sys
-import yaml
-import json
-import copy
-import inspect
 import argparse
 import collections
-from yaml import Dumper
+import copy
+import inspect
+import json
+import sys
 from collections import OrderedDict
 
+import yaml
 from retrieval.utils.file_utils import load_yaml_opts
+from yaml import Dumper
 
 
 class OptionsDict(OrderedDict):

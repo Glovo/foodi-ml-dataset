@@ -1,17 +1,13 @@
+import numpy as np
 import torch
 import torch.nn as nn
-
-from ..similarity.measure import l2norm
-from ...utils.layers import default_initializer
-
-from torch.nn.utils.rnn import pack_padded_sequence
-from torch.nn.utils.rnn import pad_packed_sequence
+from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 
 from ...model.layers import attention, convblocks
-from .embedding import PartialConcat, GloveEmb, PartialConcatScale
+from ...utils.layers import default_initializer
+from ..similarity.measure import l2norm
 from . import pooling
-
-import numpy as np
+from .embedding import GloveEmb, PartialConcat, PartialConcatScale
 
 
 # RNN Based Language Model

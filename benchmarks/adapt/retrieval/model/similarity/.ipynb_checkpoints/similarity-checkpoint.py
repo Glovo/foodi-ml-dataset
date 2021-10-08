@@ -11,10 +11,9 @@ from tqdm import tqdm
 from ...utils import helper
 from ...utils.logger import get_logger
 from .. import txtenc
-from ..layers import attention, adapt
+from ..layers import adapt, attention
+from ..txtenc import factory, pooling
 from ..txtenc.pooling import mean_pooling
-from ..txtenc import pooling
-from ..txtenc import factory
 from .measure import cosine_sim, l2norm
 
 logger = get_logger()
