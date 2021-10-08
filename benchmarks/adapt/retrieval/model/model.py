@@ -23,7 +23,6 @@ class Retrieval(nn.Module):
         super().__init__()
 
         self.master = True
-        print("img_enc: ", img_enc)
         self.latent_size = latent_size
         self.img_enc = get_image_encoder(
             name=img_enc.name,
@@ -145,7 +144,6 @@ class Retrieval(nn.Module):
         return txt_embed
 
     def forward_batch(self, batch):
-        # print('batch:',batch['image'].shape)
         img_embed = self.embed_images(batch['image'].to(self.img_enc.device))
         txt_embed = self.embed_captions(batch)
         return img_embed, txt_embed

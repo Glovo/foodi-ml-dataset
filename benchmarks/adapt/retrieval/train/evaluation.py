@@ -29,12 +29,11 @@ def predict_loader(model, data_loader, device):
         else:
             cap, lengths = batch['caption']
         img_emb, cap_emb = model.forward_batch(batch)
-        # print(f"after doing forward in one batch in evaluation: img_emb.size(): {img_emb.size()}")
-        # print(f"after doing forward in one batch in evaluation: cap_emb.size(): {cap_emb.size()}")
+
         if img_embs is None:
             if len(img_emb.shape) == 3:
                 is_tensor = True
-                # print(f"Trying to allocate a tensor in CPU of ({len(data_loader.dataset)}, {img_emb.size(1)}, {img_emb.size(2)})")
+
                 img_embs = np.zeros(
                     (max_n_samples, img_emb.size(1), img_emb.size(2)))
                 cap_embs = np.zeros(
@@ -166,17 +165,7 @@ def evaluate(
         embed_b=txt_emb,
         lens=lengths
     )
-<<<<<<< Updated upstream
-    # Big data option
-    #sims = model.get_sim_matrix_eval(
-    #    embed_a=img_emb, 
-    #    embed_b=txt_emb,
-    #    lens=lengths
-    #)
-    sims = layers.tensor_to_numpy(sims)
-=======
     # sims = layers.tensor_to_numpy(sims)
->>>>>>> Stashed changes
     end_sim = dt()
 
     i2t_metrics = i2t(sims)
@@ -247,7 +236,6 @@ def t2i(sims):
             ranks[captions_per_image * index + i] = np.where(inds == index)[0][
                 0]
             top1[captions_per_image * index + i] = inds[0]
-            # print('top1t2i:',inds[0])
 
     # Compute metrics
     r1 = 100.0 * len(np.where(ranks < 1)[0]) / len(ranks)
@@ -275,7 +263,6 @@ def i2t(sims):
             ranks[captions_per_image * index + i] = np.where(inds == index)[0][
                 0]
             top1[captions_per_image * index + i] = inds[0]
-            # print('top1i2t:',inds[0])
 
     # Compute metrics
     r1 = 100.0 * len(np.where(ranks < 1)[0]) / len(ranks)
