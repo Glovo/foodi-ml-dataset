@@ -1,3 +1,5 @@
 benchmarks/adapt/.idea/
 .idea/
 *.pyc
+runs/
+logs/

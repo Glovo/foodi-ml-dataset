@@ -1,11 +1,12 @@
 import torch
 import torch.nn as nn
 
-from ..utils.logger import get_logger
 from . import data_parallel
+from ..utils.logger import get_logger
 from .imgenc import get_image_encoder, get_img_pooling
 from .similarity.factory import get_similarity_object
-from .similarity.similarity import Similarity, Similarity_Ev
+from .similarity.similarity import Similarity
+
 from .txtenc import get_text_encoder, get_txt_pooling
 
 logger = get_logger()
@@ -21,6 +22,7 @@ class Retrieval(nn.Module):
         super().__init__()
 
         self.master = True
+        print("img_enc: ", img_enc)
         self.latent_size = latent_size
         self.img_enc = get_image_encoder(
             name=img_enc.name,
@@ -54,18 +56,9 @@ class Retrieval(nn.Module):
             similarity.name,
             **similarity.params
         )
-        sim_obj_eval = get_similarity_object(
-            'adapt_i2t_eval',
-            **similarity.params
-        )
+
         self.similarity = Similarity(
             similarity_object=sim_obj,
-            device=similarity.device,
-            latent_size=latent_size,
-            **kwargs
-        )
-        self.similarity_eval = Similarity_Ev(
-            similarity_object=sim_obj_eval,
             device=similarity.device,
             latent_size=latent_size,
             **kwargs
@@ -114,7 +107,6 @@ class Retrieval(nn.Module):
         self.loss_device = torch.device(loss_device)
 
         self.similarity = self.similarity.to(self.loss_device)
-        self.similarity_eval = self.similarity.to(self.loss_device)
 
         # self.ml_similarity = self.ml_similarity.to(self.loss_device)
 
@@ -146,20 +138,8 @@ class Retrieval(nn.Module):
         txt_embed = self.embed_captions(batch)
         return img_embed, txt_embed
 
-    # def forward(self, images, captions, lengths):
-    #     img_embed = self.embed_images(images)
-    #     txt_embed = self.embed_captions(captions, lengths)
-    #     return img_embed, txt_embed
-
     def get_sim_matrix(self, embed_a, embed_b, lens=None):
         return self.similarity(embed_a, embed_b, lens)
-
-    def get_sim_matrix_eval(self, embed_a, embed_b, lens=None,
-                            shared_size=128):
-        return self.similarity.forward_shared_eval(
-            embed_a, embed_b, lens,
-            shared_size=shared_size
-        )
 
     def get_ml_sim_matrix(self, embed_a, embed_b, lens=None):
         return self.ml_similarity(embed_a, embed_b, lens)
@@ -170,3 +150,11 @@ class Retrieval(nn.Module):
             embed_a, embed_b, lens,
             shared_size=shared_size
         )
+
+    def forward_batch_img(self, batch):
+        img_embed = self.embed_images(batch['image'].to(self.img_enc.device))
+        return img_embed
+
+    def forward_batch_cap(self, batch):
+        cap_embed = self.embed_captions(batch)
+        return cap_embed
