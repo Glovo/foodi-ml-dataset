@@ -1,7 +1,7 @@
 # TODO: improve this
+from . import similarity as sim
 from addict import Dict
 
-from . import similarity as sim
 
 _similarities = {
     'cosine': {
@@ -12,9 +12,6 @@ _similarities = {
     },
     'adapt_i2t': {
         'class': sim.AdaptiveEmbeddingI2T,
-    },
-    'adapt_i2t_eval': {
-        'class': sim.AdaptiveEmbeddingI2T_eval,
     },
     'scan_i2t': {
         'class': sim.StackedAttention,

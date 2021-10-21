@@ -1,6 +1,6 @@
 __include__: ../abstract.yaml
 exp:
-  outpath: runs/global_model/ #runs/sample_foodi_epoch_0/ #logs/foodi-ml/adapt_i2t/
+  outpath: runs/sample_foodi_epoch_0 #runs/sample_foodi_epoch_0/ #logs/foodi-ml/adapt_i2t/
 dataset:
   vocab_paths: [.vocab_cache/foodiml_vocab.json,]
   train:

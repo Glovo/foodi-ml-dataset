@@ -1,5 +1,4 @@
 import os
-
 import torch
 from tensorboardX import SummaryWriter
 
@@ -7,15 +6,16 @@ from ..utils.logger import get_logger
 
 logger = get_logger()
 
-def save_checkpoint(
-    outpath, model, optimizer=None,
-    is_best=False, save_all=False, **kwargs
-):
 
+def save_checkpoint(
+        outpath, model, optimizer=None,
+        is_best=False, save_all=False, **kwargs
+):
     if hasattr(model, 'module'):
         model = model.module
 
-    state_dict = {'model': model.state_dict(), 'optimizer': optimizer.state_dict()}
+    state_dict = {'model': model.state_dict(),
+                  'optimizer': optimizer.state_dict()}
     state_dict.update(**kwargs)
 
     if not save_all:
@@ -33,14 +33,15 @@ def save_checkpoint(
             os.path.join(outpath, 'best_model_eval.pkl'),
         )
 
+
 def save_checkpoint_foodi(
         outpath, model, optimizer=None,
         is_best=False, epoch=1):
-
     if hasattr(model, 'module'):
         model = model.module
 
-    state_dict = {'model': model.state_dict(), 'optimizer': optimizer.state_dict()}
+    state_dict = {'model': model.state_dict(),
+                  'optimizer': optimizer.state_dict()}
     # state_dict.update(**kwargs)
 
     torch.save(
@@ -55,28 +56,58 @@ def save_checkpoint_foodi(
             os.path.join(outpath, 'best_model_foodi.pkl'),
         )
 
+
 def load_model(path):
-
-    from addict import Dict
-
     from .. import model
+    from addict import Dict
     from ..data.tokenizer import Tokenizer
 
     checkpoint = torch.load(
-        path,  map_location=lambda storage, loc: storage
+        path, map_location=lambda storage, loc: storage
     )
-    vocab_paths = checkpoint['args']['dataset']['vocab_paths']
+    print(checkpoint.keys())
+    # vocab_paths = checkpoint['args']['dataset']['vocab_paths']
+    vocab_paths = [".vocab_cache/foodiml_vocab.json"]
     tokenizers = [Tokenizer(vocab_path=x) for x in vocab_paths]
 
-    model_params = Dict(**checkpoint['args']['model'])
+    similarity_eval_keys = []
+    for k, v in checkpoint["model"].items():
+        if "similarity_eval" in k:
+            print("popping key: ", k)
+            similarity_eval_keys.append(k)
+    for k in similarity_eval_keys:
+        checkpoint["model"].pop(k)
+
+    # model_params = Dict(**checkpoint['model'])
+    model_params = {'model': {'latent_size': 2048, 'txt_enc': {'name': 'gru',
+                                                               'params': {
+                                                                   'embed_dim': 300,
+                                                                   'use_bi_gru': True},
+                                                               'pooling': 'none',
+                                                               'devices': [
+                                                                   'cpu']},
+                              'img_enc': {'name': 'full_image',
+                                          'params': {'img_dim': 2048},
+                                          'devices': ['cpu'],
+                                          'pooling': 'none'},
+                              'similarity': {'name': 'adapt_i2t',
+                                             'params': {'latent_size': 2048,
+                                                        'gamma': 10,
+                                                        'train_gamma': False,
+                                                        'device': 'cpu',
+                                                        'k': 36},
+                                             'device': 'cpu'}}}
+
+    model_params = Dict(**model_params["model"])
     model = model.Retrieval(**model_params, tokenizers=tokenizers)
     model.load_state_dict(checkpoint['model'])
 
     return model
 
+
 def restore_checkpoint(path, model=None, optimizer=False):
     state_dict = torch.load(
-        path,  map_location=lambda storage, loc: storage
+        path, map_location=lambda storage, loc: storage
     )
     new_state = {}
     for k, v in state_dict['model'].items():
@@ -107,8 +138,8 @@ def get_tb_writer(logger_path):
 
 
 def get_device(gpu_id):
-    if gpu_id >= 0:
-        return torch.device('cuda:{}'.format(gpu_id))
+    #    if gpu_id >= 0:
+    #        return torch.device('cuda:{}'.format(gpu_id))
     return torch.device('cpu')
 
 
@@ -136,7 +167,8 @@ def print_tensor_dict(tensor_dict, print_fn):
 def set_tensorboard_logger(path):
     if path is not None:
         if os.path.exists(path):
-            a = input(f'{path} already exists! Do you want to rewrite it? [y/n] ')
+            a = input(
+                f'{path} already exists! Do you want to rewrite it? [y/n] ')
             if a.lower() == 'y':
                 import shutil
                 shutil.rmtree(path)
