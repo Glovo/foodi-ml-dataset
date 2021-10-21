@@ -81,7 +81,7 @@ def predict_loader_bigdata(model, data_loader, device):
         )
 
     max_samples_eval = len(data_loader.dataset)
-    max_samples_eval = 100
+    # max_samples_eval = 200
     count = 0
     img_embs = np.zeros((max_samples_eval, 2048), dtype=np.float)
     for batch in pbar_fn(data_loader):
@@ -269,3 +269,88 @@ def i2t(sims):
     meanr = np.round(ranks.mean() + 1, 5)
 
     return (r1, r5, r10, medr, meanr)
+
+
+@torch.no_grad()
+def evaluate_bigdata_new_metrics(
+        model, sims, device, valid_answers, shared_size=128, return_sims=False,
+        adapter=None):
+    model.eval()
+    _metrics_ = ('r1', 'r5', 'r10', 'medr', 'meanr')
+
+    begin_pred = dt()
+    end_pred = dt()
+
+    sims = sims.cpu().numpy()
+    end_sim = dt()
+    _metrics_ = ('r1', 'r5', 'r10', 'medr', 'meanr')
+    i2t_metrics = i2t_duplicated_idxs(sims, valid_answers, adapter)
+    print('i2t_metrics:', i2t_metrics)
+    t2i_metrics = t2i_duplicated_idxs(sims, valid_answers, adapter)
+    print('t2i_metrics:', t2i_metrics)
+    rsum = np.sum(i2t_metrics[:3]) + np.sum(t2i_metrics[:3])
+
+    i2t_metrics = {f'i2t_{k}': v for k, v in zip(_metrics_, i2t_metrics)}
+    t2i_metrics = {f't2i_{k}': v for k, v in zip(_metrics_, t2i_metrics)}
+
+    metrics = {
+        'pred_time': end_pred - begin_pred,
+        'sim_time': end_sim - end_pred,
+    }
+    metrics.update(i2t_metrics)
+    metrics.update(t2i_metrics)
+    metrics['rsum'] = rsum
+
+    if return_sims:
+        return metrics, sims
+
+    return metrics
+
+
+def t2i_duplicated_idxs(sims, valid_answers_imgs: dict, adapter):
+    npts, ncaps = sims.shape
+    captions_per_image = ncaps // npts
+
+    r_at = {
+        1: np.zeros(captions_per_image * npts),
+        5: np.zeros(captions_per_image * npts),
+        10: np.zeros(captions_per_image * npts)
+    }
+
+    sims = sims.T
+    for index in range(npts):
+        image_id = adapter.image_ids[index]
+        inds = np.argsort(sims[captions_per_image * index])[::-1]
+        for k in r_at.keys():  # 1,5,10
+            intersection = np.intersect1d(inds[:k],
+                                          valid_answers_imgs[image_id])
+            r_at[k][captions_per_image * index] = (
+                1 if len(intersection) > 0 else 0)
+    r1 = 100.0 * (np.sum(r_at[1]) / len(r_at[1]))
+    r5 = 100.0 * (np.sum(r_at[5]) / len(r_at[5]))
+    r10 = 100.0 * (np.sum(r_at[10]) / len(r_at[10]))
+    return r1, r5, r10
+
+
+def i2t_duplicated_idxs(sims, valid_answers_caps: dict, adapter):
+    npts, ncaps = sims.shape
+    captions_per_image = ncaps // npts
+
+    r_at = {
+        1: np.zeros(captions_per_image * npts),
+        5: np.zeros(captions_per_image * npts),
+        10: np.zeros(captions_per_image * npts)
+    }
+
+    for index in range(npts):
+        image_id = adapter.image_ids[index]
+        inds = np.argsort(sims[captions_per_image * index])[::-1]
+        for k in r_at.keys():  # 1,5,10
+            intersection = np.intersect1d(inds[:k],
+                                          valid_answers_caps[image_id])
+            r_at[k][captions_per_image * index] = (
+                1 if len(intersection) > 0 else 0)
+    r1 = 100.0 * (np.sum(r_at[1]) / len(r_at[1]))
+    r5 = 100.0 * (np.sum(r_at[5]) / len(r_at[5]))
+    r10 = 100.0 * (np.sum(r_at[10]) / len(r_at[10]))
+    return r1, r5, r10

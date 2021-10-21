@@ -343,6 +343,34 @@ class Trainer:
             final_sum += result[f'{loader_name}/rsum']
         return loader_metrics, final_sum / float(nb_loaders)
 
+    def evaluate_loaders_bigdata_new_metrics(self, loaders):
+        loader_metrics = {}
+        final_sum = 0.
+        nb_loaders = len(loaders)
+        for i, loader in enumerate(loaders):
+            loader_name = str(loader.dataset)
+            self.sysoutlog(
+                f'Evaluating {i + 1:2d}/{nb_loaders:2d} - {loader_name}')
+            sims = evaluation.predict_loader_bigdata(self.model, loader,
+                                                     self.device)
+            result = evaluation.evaluate_bigdata_new_metrics(
+                model=self.model, sims=sims,
+                device=self.device,
+                valid_answers=loader.dataset.data_wrapper.valid_answers,
+                shared_size=128, adapter=loader.dataset.data_wrapper)
+
+            for k, v in result.items():
+                self.sysoutlog(f'{k:<10s}: {v:>6.1f}')
+
+            result = {
+                f'{loader_name}/{metric_name}': v
+                for metric_name, v in result.items()
+            }
+
+            loader_metrics.update(result)
+            final_sum += result[f'{loader_name}/rsum']
+        return loader_metrics, final_sum / float(nb_loaders)
+
     def save_foodi(self, path=None, is_best=False, epoch=0):
         helper.save_checkpoint_foodi(
             path,
