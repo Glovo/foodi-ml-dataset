@@ -1,5 +1,5 @@
 import torch
-from numpy import np
+import numpy as np
 from tqdm import tqdm
 
 
