@@ -32,7 +32,7 @@ epoch_start = 0
 # define torch dataset and dataloader
 ds_train = FoodiMLDataset(df_train, (224, 224))
 dataloader_train = DataLoader(
-    dataset=ds_train, batch_size=batch_size, drop_last=True, shuffle=True, num_workers=4
+    dataset=ds_train, batch_size=batch_size, drop_last=True, shuffle=True, num_workers=16
 )
 
 # model definition
