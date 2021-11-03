@@ -13,7 +13,7 @@ from benchmarks.wit.network import WIT_NN, load_saved_model
 # set PIL to handle large images
 LARGE_ENOUGH_NUMBER = 100
 device = "cuda"
-epochs_trained = 10
+epochs_trained = 19
 PngImagePlugin.MAX_TEXT_CHUNK = LARGE_ENOUGH_NUMBER * (1024 ** 2)
 
 # make sure to run the code from the foodi-ml-dataset folder
