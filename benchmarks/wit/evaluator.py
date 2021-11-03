@@ -71,7 +71,7 @@ class adapter:
         self.image_ids = image_ids
         self.img_dict = img_dict
         self.annotations = annotations
-        return adapter
+        return self
 
 
 @torch.no_grad()
