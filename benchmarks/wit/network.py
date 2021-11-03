@@ -28,9 +28,11 @@ class NeuralNetwork:
             for name, param in self.network.named_parameters():
                 requires_training = train if name in layers_to_train else not train
                 param.requires_grad = requires_training
+    def forward(self, x):
+        return self.network(x)
 
 
-class LanguageEmbeddingsHead(NeuralNetwork):
+class LanguageEmbeddingsHead(nn.Module,NeuralNetwork):
     def __init__(self, model_type="stsb-xlm-r-multilingual"):
         # NOTE: https://www.sbert.net/docs/training/overview.html
         super().__init__()
@@ -38,7 +40,6 @@ class LanguageEmbeddingsHead(NeuralNetwork):
         self.network = SentenceTransformer(
             modules=[SentenceTransformer(model_type), embedding_dim_reduction]
         )
-
 
 class ImageEmbeddingsCNN(nn.Module, NeuralNetwork):
     """CNN for the image tower of the WIT method"""
@@ -52,8 +53,6 @@ class ImageEmbeddingsCNN(nn.Module, NeuralNetwork):
         )
         self.network.fc = linear_layer
 
-    def forward(self, x):
-        return self.network(x)
 
 
 class WIT_NN(nn.Module):
