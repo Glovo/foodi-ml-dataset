@@ -103,5 +103,5 @@ model.cnn.network = model.cnn.network.to(device)
 
 
 model = train_wit_network(
-    model, device, dataloader_train, optimizer, criterion, epochs, epoch_start=20
+    model, device, dataloader_train, optimizer, criterion, epochs, epoch_start=epoch_start
 )
