@@ -95,3 +95,19 @@ class WIT_NN(nn.Module):
         """
         sim_mt = torch.mm(a, b.transpose(0, 1))
         return sim_mt
+
+
+def load_saved_model(device, path="./trained_model.pth"):
+    model = WIT_NN(device=device)
+    model.load_state_dict(torch.load(path), map_location=device)
+    model = model.to(device)
+    model.language_head.network = model.language_head.network.to(device)
+    model.cnn.network = model.cnn.network.to(device)
+    return model
+
+
+def model_to_device(device, model):
+    model = model.to(device)
+    model.language_head.network = model.language_head.network.to(device)
+    model.cnn.network = model.cnn.network.to(device)
+    return model

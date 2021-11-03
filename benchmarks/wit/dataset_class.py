@@ -27,7 +27,7 @@ class FoodiMLDataset(Dataset):
         return self.df.shape[0]
 
 
-class FoodiML_textonly_Dataset(Dataset):
+class FoodiMLDatasetText(Dataset):
     # variant of the dataset that returns only text
     def __init__(self, df: pd.DataFrame):
         self.df = df
