@@ -16,8 +16,7 @@ device = "cuda"
 epochs_trained = 10
 PngImagePlugin.MAX_TEXT_CHUNK = LARGE_ENOUGH_NUMBER * (1024 ** 2)
 
-# set correct path and load dataset
-os.chdir("./foodi-ml-dataset/")
+# make sure to run the code from the foodi-ml-dataset folder
 df = pd.read_csv("spanish_subset.csv")
 # rename images
 root_path = "./spanish_subset/"
