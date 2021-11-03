@@ -28,8 +28,6 @@ class NeuralNetwork:
             for name, param in self.network.named_parameters():
                 requires_training = train if name in layers_to_train else not train
                 param.requires_grad = requires_training
-    def forward(self, x):
-        return self.network(x)
 
 
 class LanguageEmbeddingsHead(nn.Module,NeuralNetwork):
@@ -40,6 +38,8 @@ class LanguageEmbeddingsHead(nn.Module,NeuralNetwork):
         self.network = SentenceTransformer(
             modules=[SentenceTransformer(model_type), embedding_dim_reduction]
         )
+    def forward(self, x):
+        return self.network(x)
 
 class ImageEmbeddingsCNN(nn.Module, NeuralNetwork):
     """CNN for the image tower of the WIT method"""
@@ -52,6 +52,8 @@ class ImageEmbeddingsCNN(nn.Module, NeuralNetwork):
             nn.Tanh(),
         )
         self.network.fc = linear_layer
+    def forward(self, x):
+        return self.network(x)
 
 
 
