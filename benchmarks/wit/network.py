@@ -99,7 +99,7 @@ class WIT_NN(nn.Module):
 
 def load_saved_model(device, path="./trained_model.pth"):
     model = WIT_NN(device=device)
-    model.load_state_dict(torch.load(path), map_location=device)
+    model.load_state_dict(torch.load(path, map_location=device))
     model = model.to(device)
     model.language_head.network = model.language_head.network.to(device)
     model.cnn.network = model.cnn.network.to(device)
