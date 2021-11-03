@@ -12,11 +12,18 @@ from .embedding import GloveEmb, PartialConcat, PartialConcatScale
 
 # RNN Based Language Model
 class GloveRNNEncoder(nn.Module):
-
     def __init__(
-        self, tokenizers, embed_dim, latent_size,
-        num_layers=1, use_bi_gru=True, no_txtnorm=False,
-        rnn_type=nn.GRU, glove_path=None, add_rand_embed=False):
+        self,
+        tokenizers,
+        embed_dim,
+        latent_size,
+        num_layers=1,
+        use_bi_gru=True,
+        no_txtnorm=False,
+        rnn_type=nn.GRU,
+        glove_path=None,
+        add_rand_embed=False,
+    ):
 
         super().__init__()
         self.latent_size = latent_size
@@ -34,23 +41,22 @@ class GloveRNNEncoder(nn.Module):
             rand_dim=embed_dim,
         )
 
-
         # caption embedding
         self.use_bi_gru = use_bi_gru
         self.rnn = rnn_type(
             self.embed.final_word_emb,
-            latent_size, num_layers,
+            latent_size,
+            num_layers,
             batch_first=True,
-            bidirectional=use_bi_gru
+            bidirectional=use_bi_gru,
         )
 
-        if hasattr(self.embed, 'embed'):
+        if hasattr(self.embed, "embed"):
             self.embed.embed.weight.data.uniform_(-0.1, 0.1)
 
     def forward(self, batch):
-        """Handles variable size captions
-        """
-        captions, lengths = batch['caption']
+        """Handles variable size captions"""
+        captions, lengths = batch["caption"]
         captions = captions.to(self.device)
         # Embed word ids to vectors
         emb = self.embed(captions)
@@ -61,7 +67,7 @@ class GloveRNNEncoder(nn.Module):
 
         if self.use_bi_gru:
             b, t, d = cap_emb.shape
-            cap_emb = cap_emb.view(b, t, 2, d//2).mean(-2)
+            cap_emb = cap_emb.view(b, t, 2, d // 2).mean(-2)
 
         # normalization in the joint embedding space
         if not self.no_txtnorm:
@@ -72,11 +78,16 @@ class GloveRNNEncoder(nn.Module):
 
 # RNN Based Language Model
 class RNNEncoder(nn.Module):
-
     def __init__(
-        self, tokenizers, embed_dim, latent_size,
-        num_layers=1, use_bi_gru=True, no_txtnorm=False,
-        rnn_type=nn.GRU):
+        self,
+        tokenizers,
+        embed_dim,
+        latent_size,
+        num_layers=1,
+        use_bi_gru=True,
+        no_txtnorm=False,
+        rnn_type=nn.GRU,
+    ):
 
         super(RNNEncoder, self).__init__()
         self.latent_size = latent_size
@@ -91,17 +102,18 @@ class RNNEncoder(nn.Module):
         # caption embedding
         self.use_bi_gru = use_bi_gru
         self.rnn = rnn_type(
-            embed_dim, latent_size, num_layers,
+            embed_dim,
+            latent_size,
+            num_layers,
             batch_first=True,
-            bidirectional=use_bi_gru
+            bidirectional=use_bi_gru,
         )
 
         self.apply(default_initializer)
 
     def forward(self, batch):
-        """Handles variable size captions
-        """
-        captions, lengths = batch['caption']
+        """Handles variable size captions"""
+        captions, lengths = batch["caption"]
         captions = captions.to(self.device)
 
         # Embed word ids to vectors
@@ -112,7 +124,7 @@ class RNNEncoder(nn.Module):
 
         if self.use_bi_gru:
             b, t, d = cap_emb.shape
-            cap_emb = cap_emb.view(b, t, 2, d//2).mean(-2)
+            cap_emb = cap_emb.view(b, t, 2, d // 2).mean(-2)
 
         # normalization in the joint embedding space
         if not self.no_txtnorm:

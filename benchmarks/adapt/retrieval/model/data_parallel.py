@@ -8,6 +8,7 @@ def gather(outputs, target_device, dim=0):
     Gathers tensors from different GPUs on a specified device
       (-1 means the CPU).
     """
+
     def gather_map(outputs):
         out = outputs[0]
         if torch.is_tensor(out):
@@ -16,9 +17,8 @@ def gather(outputs, target_device, dim=0):
             return None
         if isinstance(out, dict):
             if not all((len(out) == len(d) for d in outputs)):
-                raise ValueError('All dicts must have the same number of keys')
-            return type(out)(((k, gather_map([d[k] for d in outputs]))
-                              for k in out))
+                raise ValueError("All dicts must have the same number of keys")
+            return type(out)(((k, gather_map([d[k] for d in outputs])) for k in out))
         return type(out)(map(gather_map, zip(*outputs)))
 
     # Recursive function calls like this create reference cycles.
@@ -30,7 +30,6 @@ def gather(outputs, target_device, dim=0):
 
 
 class DataParallel(nn.DataParallel):
-
     def __getattr__(self, key):
         try:
             return super(DataParallel, self).__getattr__(key)
@@ -48,7 +47,6 @@ class DataParallel(nn.DataParallel):
 
 
 class DistributedDataParallel(nn.parallel.DistributedDataParallel):
-
     def __getattr__(self, key):
         try:
             return super(DistributedDataParallel, self).__getattr__(key)

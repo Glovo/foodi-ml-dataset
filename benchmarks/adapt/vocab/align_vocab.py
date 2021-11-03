@@ -4,7 +4,7 @@ import numpy as np
 import torch
 from tqdm import tqdm
 
-sys.path.append('../')
+sys.path.append("../")
 from params import get_vocab_alignment_params
 from retrieval.data.tokenizer import Tokenizer
 from retrieval.utils.logger import create_logger
@@ -13,11 +13,11 @@ from retrieval.utils.logger import create_logger
 def loadEmbModel(embFile, logger):
     """Loads W2V or Glove Model"""
     logger.info("Loading Embedding Model")
-    f = open(embFile,'r')
+    f = open(embFile, "r")
     model = {}
     v = []
     for line in f:
-        splitLine = line.split(' ')
+        splitLine = line.split(" ")
         word = splitLine[0]
         try:
             embedding = np.array([float(val) for val in splitLine[1:]])
@@ -27,17 +27,17 @@ def loadEmbModel(embFile, logger):
         v.append(embedding)
     mean = np.array(v).mean(0)
     logger.info(mean.shape)
-    model['<unk>'] = torch.tensor(mean)
-    model['<pad>'] = torch.zeros(embedding.shape)
-    model['<start>'] = torch.zeros(embedding.shape)
-    model['<end>'] = torch.zeros(embedding.shape)
-    logger.info("Done.",len(model)," words loaded!")
+    model["<unk>"] = torch.tensor(mean)
+    model["<pad>"] = torch.zeros(embedding.shape)
+    model["<start>"] = torch.zeros(embedding.shape)
+    model["<end>"] = torch.zeros(embedding.shape)
+    logger.info("Done.", len(model), " words loaded!")
     return model
 
 
 def align_vocabs(emb_model, tokenizer):
     """Align vocabulary and embedding model"""
-    hi_emb = emb_model['hi']
+    hi_emb = emb_model["hi"]
     logger.info(hi_emb.shape)
     total_unk = 0
     nmax = max(tokenizer.vocab.idx2word.keys()) + 1
@@ -48,7 +48,7 @@ def align_vocabs(emb_model, tokenizer):
         try:
             word_matrix[k] = torch.tensor(emb_model[v])
         except KeyError:
-            word_matrix[k] = emb_model['<unk>']
+            word_matrix[k] = emb_model["<unk>"]
             total_unk += 1
     return word_matrix, total_unk
 
@@ -59,9 +59,10 @@ def load_tokenizer(args):
     tokenizer.load(args.vocab_path)
     return tokenizer
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     args = get_vocab_alignment_params()
-    logger = create_logger(level='debug')
+    logger = create_logger(level="debug")
 
     tokenizer = load_tokenizer(args)
 
@@ -69,6 +70,6 @@ if __name__ == '__main__':
 
     word_matrix, total_unk = align_vocabs(emb_model, tokenizer)
 
-    logger.info(f'Finished. Total UNK: {total_unk}')
+    logger.info(f"Finished. Total UNK: {total_unk}")
     torch.save(word_matrix, args.outpath)
-    logger.info(f'Saved into: {args.outpath}')
+    logger.info(f"Saved into: {args.outpath}")

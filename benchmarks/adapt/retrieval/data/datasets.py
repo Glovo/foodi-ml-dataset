@@ -7,7 +7,9 @@ import PIL
 import torch
 from PIL import Image
 
-PIL.Image.LOAD_TRUNCATED_IMAGES = True # Otherwise we got ValueError: Decompressed data too large
+PIL.Image.LOAD_TRUNCATED_IMAGES = (
+    True  # Otherwise we got ValueError: Decompressed data too large
+)
 import io
 from pathlib import Path
 
@@ -29,25 +31,28 @@ class ImageDataset(Dataset):
     """
 
     def __init__(
-        self, data_path, data_name,
-        data_split, tokenizer, lang='en',
-        resize_to=256, crop_size=224,
+        self,
+        data_path,
+        data_name,
+        data_split,
+        tokenizer,
+        lang="en",
+        resize_to=256,
+        crop_size=224,
     ):
         from .adapters import FoodiML
 
-        logger.debug(f'ImageDataset\n {[data_path, data_split, tokenizer, lang]}')
+        logger.debug(f"ImageDataset\n {[data_path, data_split, tokenizer, lang]}")
         self.tokenizer = tokenizer
         self.lang = lang
         self.data_split = data_split
-        self.split = '.'.join([data_split, lang])
+        self.split = ".".join([data_split, lang])
         self.data_path = Path(data_path)
         self.data_name = Path(data_name)
 
-        self.data_wrapper = (
-            FoodiML(
-                self.data_path,
-                data_split=data_split,
-            )
+        self.data_wrapper = FoodiML(
+            self.data_path,
+            data_split=data_split,
         )
 
         self._fetch_captions()
@@ -59,28 +64,28 @@ class ImageDataset(Dataset):
 
         self.captions_per_image = 1
 
-        logger.debug(f'Split size: {len(self.ids)}')
+        logger.debug(f"Split size: {len(self.ids)}")
 
-    def _fetch_captions(self,):
+    def _fetch_captions(
+        self,
+    ):
         self.captions = []
         for image_id in self.data_wrapper.image_ids:
-            self.captions.extend(
-                self.data_wrapper.get_captions_by_image_id(image_id)
-            )
+            self.captions.extend(self.data_wrapper.get_captions_by_image_id(image_id))
 
         self.ids = range(len(self.captions))
-        logger.debug(f'Loaded {len(self.captions)} captions')
+        logger.debug(f"Loaded {len(self.captions)} captions")
 
     def load_img(self, image_id):
 
         s3_key = self.data_wrapper.get_s3_key_by_image_id(image_id)
 
-        #TODO: change to 'glovo-products-dataset-d1c9720d'
+        # TODO: change to 'glovo-products-dataset-d1c9720d'
         bucket_name = "test-bucket-glovocds"
 
         # Boto 3
         session = boto3.Session()
-        s3_resource = session.resource('s3')
+        s3_resource = session.resource("s3")
         bucket = s3_resource.Bucket(bucket_name)
 
         # Get image as bytes an open image as image PIL
@@ -91,8 +96,12 @@ class ImageDataset(Dataset):
             pil_im = Image.open(file_stream)
             image = self.transform(pil_im)
         except OSError:
-            print('Error to load image: ', s3_key)
-            image = torch.zeros(3, 224, 224,)
+            print("Error to load image: ", s3_key)
+            image = torch.zeros(
+                3,
+                224,
+                224,
+            )
 
         return image
 
@@ -105,7 +114,7 @@ class ImageDataset(Dataset):
         caption = self.captions[index]
         print("caption: ", caption)
         cap_tokens = self.tokenizer(caption)
-        
+
         batch = Dict(
             image=image,
             caption=cap_tokens,
@@ -119,12 +128,12 @@ class ImageDataset(Dataset):
         return self.length
 
     def __repr__(self):
-        return f'ImageDataset.{self.data_name}.{self.split}'
+        return f"ImageDataset.{self.data_name}.{self.split}"
 
     def __str__(self):
-        return f'{self.data_name}.{self.split}'
+        return f"{self.data_name}.{self.split}"
 
-    
+
 class InDiskImageDataset(Dataset):
     """
     Load precomputed captions and image features
@@ -132,26 +141,29 @@ class InDiskImageDataset(Dataset):
     """
 
     def __init__(
-        self, data_path, data_name,
-        data_split, tokenizer, lang='en',
-        resize_to=256, crop_size=224,
+        self,
+        data_path,
+        data_name,
+        data_split,
+        tokenizer,
+        lang="en",
+        resize_to=256,
+        crop_size=224,
     ):
         from .adapters import FoodiML
 
-        logger.debug(f'ImageDataset\n {[data_path, data_split, tokenizer, lang]}')
+        logger.debug(f"ImageDataset\n {[data_path, data_split, tokenizer, lang]}")
         self.tokenizer = tokenizer
         self.lang = lang
         self.data_split = data_split
-        self.split = '.'.join([data_split, lang])
+        self.split = ".".join([data_split, lang])
         self.data_path = Path(data_path)
         self.data_name = Path(data_name)
-        
+
         self.full_path = self.data_path / self.data_name
-        self.data_wrapper = (
-            FoodiML(
-                self.data_path,
-                data_split=data_split,
-            )
+        self.data_wrapper = FoodiML(
+            self.data_path,
+            data_split=data_split,
         )
 
         self._fetch_captions()
@@ -163,29 +175,33 @@ class InDiskImageDataset(Dataset):
 
         self.captions_per_image = 1
 
-        logger.debug(f'Split size: {len(self.ids)}')
+        logger.debug(f"Split size: {len(self.ids)}")
 
-    def _fetch_captions(self,):
+    def _fetch_captions(
+        self,
+    ):
         self.captions = []
         for image_id in self.data_wrapper.image_ids:
-            self.captions.extend(
-                self.data_wrapper.get_captions_by_image_id(image_id)
-            )
+            self.captions.extend(self.data_wrapper.get_captions_by_image_id(image_id))
 
         self.ids = range(len(self.captions))
-        logger.debug(f'Loaded {len(self.captions)} captions')
+        logger.debug(f"Loaded {len(self.captions)} captions")
 
     def load_img(self, image_id):
-        
+
         filename = self.data_wrapper.get_filename_by_image_id(image_id)
-        
+
         feat_path = self.full_path / filename
         try:
             image = default_loader(feat_path)
             image = self.transform(image)
         except OSError:
-            print('Error to load image: ', feat_path)
-            image = torch.zeros(3, 224, 224,)
+            print("Error to load image: ", feat_path)
+            image = torch.zeros(
+                3,
+                224,
+                224,
+            )
 
         return image
 
@@ -193,10 +209,10 @@ class InDiskImageDataset(Dataset):
         # handle the image redundancy
         seq_id = self.ids[index]
         image_id = self.data_wrapper.image_ids[seq_id]
-        
+
         image = self.load_img(image_id)
         caption = self.captions[index]
-        
+
         cap_tokens = self.tokenizer(caption)
         # What does the model do with these tokens?
         batch = Dict(
@@ -211,11 +227,7 @@ class InDiskImageDataset(Dataset):
         return self.length
 
     def __repr__(self):
-        return f'ImageDataset.{self.data_name}.{self.split}'
+        return f"ImageDataset.{self.data_name}.{self.split}"
 
     def __str__(self):
-        return f'{self.data_name}.{self.split}'
-
-    
-
-   
+        return f"{self.data_name}.{self.split}"

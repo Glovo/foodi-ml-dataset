@@ -5,20 +5,19 @@ from ..layers import attention, convblocks
 
 
 class PartialConcat(nn.Module):
-
     def __init__(
-            self,
-            num_embeddings,
-            embed_dim=300,
-            liwe_char_dim=24,
-            liwe_neurons=[128, 256],
-            liwe_dropout=0.0,
-            liwe_wnorm=True,
-            liwe_batch_norm=True,
-            liwe_activation=nn.ReLU(inplace=True),
-            max_chars = 26,
-            **kwargs
-        ):
+        self,
+        num_embeddings,
+        embed_dim=300,
+        liwe_char_dim=24,
+        liwe_neurons=[128, 256],
+        liwe_dropout=0.0,
+        liwe_wnorm=True,
+        liwe_batch_norm=True,
+        liwe_activation=nn.ReLU(inplace=True),
+        max_chars=26,
+        **kwargs
+    ):
         super(PartialConcat, self).__init__()
 
         weight_norm = nn.Identity
@@ -38,22 +37,22 @@ class PartialConcat(nn.Module):
             batch_norm = nn.Identity
 
         for n, i in zip(liwe_neurons, in_sizes):
-            layer = nn.Sequential(*[
-                weight_norm(
-                    nn.Conv1d(i, n, 1)
-                ),
-                nn.Dropout(liwe_dropout),
-                batch_norm(n),
-                liwe_activation,
-            ])
+            layer = nn.Sequential(
+                *[
+                    weight_norm(nn.Conv1d(i, n, 1)),
+                    nn.Dropout(liwe_dropout),
+                    batch_norm(n),
+                    liwe_activation,
+                ]
+            )
             layers.append(layer)
 
         self.layers = nn.Sequential(*layers)
 
     def forward_embed(self, x):
 
-        partial_words = x.view(self.B, -1) # (B, W*Ct)
-        char_embed = self.embed(partial_words) # (B, W*Ct, Cw)
+        partial_words = x.view(self.B, -1)  # (B, W*Ct)
+        char_embed = self.embed(partial_words)  # (B, W*Ct, Cw)
         # char_embed = l2norm(char_embed, 2)
         char_embed = char_embed.view(self.B, self.W, -1)
         # a, b, c = char_embed.shape
@@ -64,28 +63,27 @@ class PartialConcat(nn.Module):
         return word_embed
 
     def forward(self, x):
-        '''
-            x: (batch, nb_words, nb_characters [tokens])
-        '''
+        """
+        x: (batch, nb_words, nb_characters [tokens])
+        """
         self.B, self.W, self.Ct = x.size()
         return self.forward_embed(x)
 
 
 class PartialConcat(nn.Module):
-
     def __init__(
-            self,
-            num_embeddings,
-            embed_dim=300,
-            liwe_char_dim=24,
-            liwe_neurons=[128, 256],
-            liwe_dropout=0.0,
-            liwe_wnorm=True,
-            liwe_batch_norm=True,
-            liwe_activation=nn.ReLU(inplace=True),
-            max_chars=26,
-            **kwargs
-        ):
+        self,
+        num_embeddings,
+        embed_dim=300,
+        liwe_char_dim=24,
+        liwe_neurons=[128, 256],
+        liwe_dropout=0.0,
+        liwe_wnorm=True,
+        liwe_batch_norm=True,
+        liwe_activation=nn.ReLU(inplace=True),
+        max_chars=26,
+        **kwargs
+    ):
         super(PartialConcat, self).__init__()
 
         if type(liwe_activation) == str:
@@ -114,22 +112,22 @@ class PartialConcat(nn.Module):
             batch_norm = nn.Identity
 
         for n, i in zip(liwe_neurons, in_sizes):
-            layer = nn.Sequential(*[
-                weight_norm(
-                    nn.Conv1d(i, n, 1)
-                ),
-                nn.Dropout(liwe_dropout),
-                batch_norm(n),
-                liwe_activation,
-            ])
+            layer = nn.Sequential(
+                *[
+                    weight_norm(nn.Conv1d(i, n, 1)),
+                    nn.Dropout(liwe_dropout),
+                    batch_norm(n),
+                    liwe_activation,
+                ]
+            )
             layers.append(layer)
 
         self.layers = nn.Sequential(*layers)
 
     def forward_embed(self, x):
 
-        partial_words = x.view(self.B, -1) # (B, W*Ct)
-        char_embed = self.embed(partial_words) # (B, W*Ct, Cw)
+        partial_words = x.view(self.B, -1)  # (B, W*Ct)
+        char_embed = self.embed(partial_words)  # (B, W*Ct, Cw)
         # char_embed = l2norm(char_embed, 2)
         char_embed = char_embed.view(self.B, self.W, -1)
         # a, b, c = char_embed.shape
@@ -140,34 +138,28 @@ class PartialConcat(nn.Module):
         return word_embed
 
     def forward(self, x):
-        '''
-            x: (batch, nb_words, nb_characters [tokens])
-        '''
+        """
+        x: (batch, nb_words, nb_characters [tokens])
+        """
         self.B, self.W, self.Ct = x.size()
         return self.forward_embed(x)
 
 
 class PartialGRUs(nn.Module):
-
-    def __init__(
-            self,
-            num_embeddings,
-            embed_dim=300,
-            liwe_char_dim=24,
-            **kwargs
-        ):
+    def __init__(self, num_embeddings, embed_dim=300, liwe_char_dim=24, **kwargs):
         super().__init__()
 
         self.embed = nn.Embedding(num_embeddings, liwe_char_dim)
 
-        self.rnn = nn.GRU(liwe_char_dim, embed_dim, 1,
-            batch_first=True, bidirectional=False)
+        self.rnn = nn.GRU(
+            liwe_char_dim, embed_dim, 1, batch_first=True, bidirectional=False
+        )
 
     def forward_embed(self, x):
 
-        partial_words = x.view(self.B, -1) # (B, W*Ct)
-        char_embed = self.embed(partial_words) # (B, W*Ct, Cw)
-        char_embed = char_embed.view(self.B*self.W, self.Ct, -1)
+        partial_words = x.view(self.B, -1)  # (B, W*Ct)
+        char_embed = self.embed(partial_words)  # (B, W*Ct, Cw)
+        char_embed = char_embed.view(self.B * self.W, self.Ct, -1)
         x, _ = self.rnn(char_embed)
 
         b, t, d = x.shape
@@ -177,10 +169,10 @@ class PartialGRUs(nn.Module):
         return x
 
     def forward(self, x):
-        '''
-            x: (batch, nb_words, nb_characters [tokens])
-        '''
-        x = x[:,:,:30]
+        """
+        x: (batch, nb_words, nb_characters [tokens])
+        """
+        x = x[:, :, :30]
         self.B, self.W, self.Ct = x.size()
         embed_word = self.forward_embed(x)
         embed_word = embed_word.view(self.B, self.W, -1)
@@ -189,19 +181,18 @@ class PartialGRUs(nn.Module):
 
 
 class PartialConcatScale(nn.Module):
-
     def __init__(
-            self,
-            num_embeddings,
-            embed_dim=300,
-            liwe_char_dim=24,
-            liwe_neurons=[128, 256],
-            liwe_dropout=0.0,
-            liwe_wnorm=True,
-            max_chars = 26,
-            liwe_activation=nn.ReLU(),
-            liwe_batch_norm=True,
-        ):
+        self,
+        num_embeddings,
+        embed_dim=300,
+        liwe_char_dim=24,
+        liwe_neurons=[128, 256],
+        liwe_dropout=0.0,
+        liwe_wnorm=True,
+        max_chars=26,
+        liwe_activation=nn.ReLU(),
+        liwe_batch_norm=True,
+    ):
         super(PartialConcatScale, self).__init__()
 
         if type(liwe_activation) == str:
@@ -226,14 +217,14 @@ class PartialConcatScale(nn.Module):
             batch_norm = nn.Identity
 
         for n, i in zip(liwe_neurons, in_sizes):
-            layer = nn.Sequential(*[
-                weight_norm(
-                    nn.Conv1d(i, n, 1)
-                ),
-                nn.Dropout(liwe_dropout),
-                batch_norm(n),
-                liwe_activation,
-            ])
+            layer = nn.Sequential(
+                *[
+                    weight_norm(nn.Conv1d(i, n, 1)),
+                    nn.Dropout(liwe_dropout),
+                    batch_norm(n),
+                    liwe_activation,
+                ]
+            )
             layers.append(layer)
 
         self.scale = nn.Parameter(torch.ones(1))
@@ -241,23 +232,21 @@ class PartialConcatScale(nn.Module):
         self.layers = nn.Sequential(*layers)
 
     def forward_embed(self, x):
-        positive_mask = (x == 0)
+        positive_mask = x == 0
         words_length = positive_mask.sum(-1)
         words_length = words_length.view(self.B, -1, 1, 1)
         words_length = words_length.float()
 
-        partial_words = x.view(self.B, -1) # (B, W*Ct)
-        char_embed = self.embed(partial_words) # (B, W*Ct, Cw)
+        partial_words = x.view(self.B, -1)  # (B, W*Ct)
+        char_embed = self.embed(partial_words)  # (B, W*Ct, Cw)
 
-        mask = (partial_words == 0)
+        mask = partial_words == 0
 
         char_embed[mask] = 0
         # char_embed = l2norm(char_embed, 2)
         char_embed = char_embed.view(self.B, self.W, -1)
 
-        char_embed_scale = char_embed.view(
-            self.B, self.W, self.max_chars, -1
-        )
+        char_embed_scale = char_embed.view(self.B, self.W, self.max_chars, -1)
 
         char_embed_scale = char_embed_scale * (torch.sqrt(words_length) * self.scale)
         char_embed_scale = char_embed_scale.view(self.B, self.W, -1)
@@ -283,37 +272,32 @@ class PartialConcatScale(nn.Module):
         return word_embed_scaled
 
     def forward(self, x):
-        '''
-            x: (batch, nb_words, nb_characters [tokens])
-        '''
+        """
+        x: (batch, nb_words, nb_characters [tokens])
+        """
         self.B, self.W, self.Ct = x.size()
         return self.forward_embed(x)
 
 
 class PartialGRUProj(nn.Module):
-
     def __init__(
-            self,
-            num_embeddings,
-            hidden_size=384,
-            embed_dim=300,
-            liwe_char_dim=24,
-            **kwargs
-        ):
+        self, num_embeddings, hidden_size=384, embed_dim=300, liwe_char_dim=24, **kwargs
+    ):
         super().__init__()
 
         self.embed = nn.Embedding(num_embeddings, liwe_char_dim)
 
-        self.rnn = nn.GRU(liwe_char_dim, hidden_size, 1,
-            batch_first=True, bidirectional=False)
+        self.rnn = nn.GRU(
+            liwe_char_dim, hidden_size, 1, batch_first=True, bidirectional=False
+        )
 
         self.fc = nn.Linear(hidden_size, embed_dim)
 
     def forward_embed(self, x):
 
-        partial_words = x.view(self.B, -1) # (B, W*Ct)
-        char_embed = self.embed(partial_words) # (B, W*Ct, Cw)
-        char_embed = char_embed.view(self.B*self.W, self.Ct, -1)
+        partial_words = x.view(self.B, -1)  # (B, W*Ct)
+        char_embed = self.embed(partial_words)  # (B, W*Ct, Cw)
+        char_embed = char_embed.view(self.B * self.W, self.Ct, -1)
         x, _ = self.rnn(char_embed)
 
         b, t, d = x.shape
@@ -325,10 +309,10 @@ class PartialGRUProj(nn.Module):
         return x
 
     def forward(self, x):
-        '''
-            x: (batch, nb_words, nb_characters [tokens])
-        '''
-        x = x[:,:,:30]
+        """
+        x: (batch, nb_words, nb_characters [tokens])
+        """
+        x = x[:, :, :30]
         self.B, self.W, self.Ct = x.size()
         embed_word = self.forward_embed(x)
         embed_word = embed_word.view(self.B, self.W, -1)
@@ -337,16 +321,15 @@ class PartialGRUProj(nn.Module):
 
 
 class GloveEmb(nn.Module):
-
     def __init__(
-            self,
-            num_embeddings,
-            glove_dim,
-            glove_path,
-            add_rand_embed=False,
-            rand_dim=None,
-            **kwargs
-        ):
+        self,
+        num_embeddings,
+        glove_dim,
+        glove_path,
+        add_rand_embed=False,
+        rand_dim=None,
+        **kwargs
+    ):
         super().__init__()
 
         self.num_embeddings = num_embeddings
@@ -356,21 +339,23 @@ class GloveEmb(nn.Module):
 
         # word embedding #TODO: dev change
         self.glove = nn.Embedding(num_embeddings, glove_dim)
-        #glove = nn.Parameter(torch.load(glove_path))
-        #self.glove.weight = glove
-        self.glove.requires_grad = True  # default to False
-        
+        # glove = nn.Parameter(torch.load(glove_path))
+        # self.glove.weight = glove
+        self.glove.requires_grad = True  # default to False
+
         if add_rand_embed:
             self.embed = nn.Embedding(num_embeddings, rand_dim)
             self.final_word_emb = glove_dim + rand_dim
 
-    def get_word_embed_size(self,):
+    def get_word_embed_size(
+        self,
+    ):
         return self.final_word_emb
 
     def forward(self, x):
-        '''
-            x: (batch, nb_words, nb_characters [tokens])
-        '''
+        """
+        x: (batch, nb_words, nb_characters [tokens])
+        """
         emb = self.glove(x)
         if self.add_rand_embed:
             emb2 = self.embed(x)

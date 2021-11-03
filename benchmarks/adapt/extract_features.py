@@ -10,13 +10,13 @@ from retrieval.utils.logger import create_logger
 from run import get_data_path, get_tokenizers, load_model
 from tqdm import tqdm
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = get_extractfeats_params()
     opt = load_yaml_opts(args.options)
-    logger = create_logger(level='debug' if opt.engine.debug else 'info')
+    logger = create_logger(level="debug" if opt.engine.debug else "info")
 
-    logger.info(f'Used args   : \n{args}')
-    logger.info(f'Used options: \n{opt}')
+    logger.info(f"Used args   : \n{args}")
+    logger.info(f"Used options: \n{opt}")
 
     data_path = get_data_path(opt)
 
@@ -45,9 +45,9 @@ if __name__ == '__main__':
         outfile = {}
         for k, v in tqdm(file.items(), total=len(file)):
             tv, l = default_padding([tokenizer(x) for x in v])
-            batch = {'caption': (tv, l)}
+            batch = {"caption": (tv, l)}
             cap = l2norm(model.embed_captions(batch).cpu(), dim=-1)
 
-            torch.save(cap, outpath_folder / f'{k}.pkl')
+            torch.save(cap, outpath_folder / f"{k}.pkl")
             outfile[k] = cap.cpu()
         torch.save(outfile, outpath_file)
