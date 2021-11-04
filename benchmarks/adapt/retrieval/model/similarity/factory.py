@@ -4,30 +4,31 @@ from addict import Dict
 from . import similarity as sim
 
 _similarities = {
-    'cosine': {
-        'class': sim.Cosine,
+    "cosine": {
+        "class": sim.Cosine,
     },
-    'adapt_t2i': {
-        'class': sim.AdaptiveEmbeddingT2I,
+    "adapt_t2i": {
+        "class": sim.AdaptiveEmbeddingT2I,
     },
-    'adapt_i2t': {
-        'class': sim.AdaptiveEmbeddingI2T,
+    "adapt_i2t": {
+        "class": sim.AdaptiveEmbeddingI2T,
     },
-    'adapt_i2t_eval': {
-        'class': sim.AdaptiveEmbeddingI2T_eval,
+    "adapt_i2t_eval": {
+        "class": sim.AdaptiveEmbeddingI2T_eval,
     },
-    'scan_i2t': {
-        'class': sim.StackedAttention,
+    "scan_i2t": {
+        "class": sim.StackedAttention,
     },
-    'scan_t2i': {
-        'class': sim.StackedAttention,
+    "scan_t2i": {
+        "class": sim.StackedAttention,
     },
-    'order': None,
+    "order": None,
 }
+
 
 def get_similarity_object(name, **kwargs):
     settings = _similarities[name]
-    return settings['class'](**kwargs)
+    return settings["class"](**kwargs)
 
 
 def get_sim_names():

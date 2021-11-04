@@ -2,17 +2,17 @@ from torchvision import transforms
 
 
 def get_transform(
-        split,
-        resize_to=256,
-        crop_size=224,
-    ):
+    split,
+    resize_to=256,
+    crop_size=224,
+):
 
     normalizer = transforms.Normalize(
         mean=[0.485, 0.456, 0.406],
         std=[0.229, 0.224, 0.225],
     )
 
-    if split == 'train':
+    if split == "train":
         t_list = [
             transforms.Resize(resize_to),
             transforms.RandomHorizontalFlip(),
@@ -28,4 +28,3 @@ def get_transform(
     transform = transforms.Compose(t_list)
 
     return transform
-

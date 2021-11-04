@@ -8,19 +8,16 @@ logger = get_logger()
 
 
 class FoodiML:
-
     def __init__(self, data_path, data_split):
 
-        data_split = data_split.replace('dev', 'val')
+        data_split = data_split.replace("dev", "val")
         self.data_split = data_split
         self.data_path = Path(data_path)
-        self.samples_path = (
-            self.data_path / 'samples'  # TODO: change to 'samples'
-        )
+        self.samples_path = self.data_path / "samples"  # TODO: change to 'samples'
         self.data = load_samples(self.samples_path, self.data_split)
         self.image_ids, self.img_dict, self.img_captions = self._get_img_ids()
-        #print("self.image_ids: ", self.image_ids)
-        logger.info(f'[FoodiML] Loaded {len(self.img_captions)} images annotated ')
+        # print("self.image_ids: ", self.image_ids)
+        logger.info(f"[FoodiML] Loaded {len(self.img_captions)} images annotated ")
 
     def _get_img_ids(self):
         image_ids = list(self.data["img_id"].values)
@@ -33,7 +30,7 @@ class FoodiML:
         return image_ids, img_dict, annotations
 
     def get_image_id_by_filename(self, filename):
-        return self.img_dict[filename]['imgid']
+        return self.img_dict[filename]["imgid"]
 
     def get_captions_by_image_id(self, img_id):
         return self.img_captions[img_id]
@@ -44,7 +41,7 @@ class FoodiML:
     def __call__(self, filename):
         return self.img_dict[filename]
 
-    def __len__(self, ):
+    def __len__(
+        self,
+    ):
         return len(self.img_captions)
-
-

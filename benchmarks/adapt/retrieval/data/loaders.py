@@ -9,17 +9,14 @@ from .tokenizer import Tokenizer
 logger = get_logger()
 
 __loaders__ = {
-    'image': {
-        'class': datasets.ImageDataset
-    },
-    'indisk_image': {
-        'class': datasets.InDiskImageDataset
-    },
+    "image": {"class": datasets.ImageDataset},
+    "indisk_image": {"class": datasets.InDiskImageDataset},
 }
+
 
 def get_dataset_class(loader_name):
     loader = __loaders__[loader_name]
-    return loader['class']
+    return loader["class"]
 
 
 def prepare_ml_data(instance, device):
@@ -30,22 +27,29 @@ def prepare_ml_data(instance, device):
 
 
 def get_loader(
-    loader_name, data_path, data_info, data_split,
-    batch_size, vocab_paths, text_repr,
-    workers=4, ngpu=1, local_rank=0,
-    **kwargs
+    loader_name,
+    data_path,
+    data_info,
+    data_split,
+    batch_size,
+    vocab_paths,
+    text_repr,
+    workers=4,
+    ngpu=1,
+    local_rank=0,
+    **kwargs,
 ):
     data_name, lang = parse_loader_name(data_info)
     if not lang:
-        lang = 'en'
-    logger.debug('Get loader')
+        lang = "en"
+    logger.debug("Get loader")
     dataset_class = get_dataset_class(loader_name)
-    logger.debug(f'Dataset class is {dataset_class}')
+    logger.debug(f"Dataset class is {dataset_class}")
 
     tokenizers = []
     for vocab_path in vocab_paths:
         tokenizers.append(Tokenizer(vocab_path))
-        logger.debug(f'Tokenizer built: {tokenizers[-1]}')
+        logger.debug(f"Tokenizer built: {tokenizers[-1]}")
 
     dataset = dataset_class(
         data_path=data_path,
@@ -54,10 +58,10 @@ def get_loader(
         tokenizer=tokenizers[0],
         lang=lang,
     )
-    logger.debug(f'Dataset built: {dataset}')
+    logger.debug(f"Dataset built: {dataset}")
 
     sampler = None
-    shuffle = (data_split == 'train')
+    shuffle = data_split == "train"
     if ngpu > 1:
         sampler = torch.utils.data.distributed.DistributedSampler(
             dataset,
@@ -68,9 +72,9 @@ def get_loader(
 
     collate = collate_fns.Collate(text_repr)
 
-    if loader_name == 'lang' and text_repr == 'liwe':
+    if loader_name == "lang" and text_repr == "liwe":
         collate = collate_fns.collate_lang_liwe
-    if loader_name == 'lang' and text_repr == 'word':
+    if loader_name == "lang" and text_repr == "word":
         collate = collate_fns.collate_lang_word
 
     loader = DataLoader(
@@ -82,14 +86,14 @@ def get_loader(
         num_workers=workers,
         sampler=sampler,
     )
-    logger.debug(f'Loader built: {loader}')
+    logger.debug(f"Loader built: {loader}")
 
     return loader
 
 
 def get_loaders(data_path, local_rank, opt):
     train_loader = get_loader(
-        data_split='train',
+        data_split="train",
         data_path=data_path,
         data_info=opt.dataset.train.data,
         loader_name=opt.dataset.loader_name,
@@ -97,14 +101,14 @@ def get_loaders(data_path, local_rank, opt):
         text_repr=opt.dataset.text_repr,
         vocab_paths=opt.dataset.vocab_paths,
         ngpu=torch.cuda.device_count(),
-        **opt.dataset.train
+        **opt.dataset.train,
     )
 
     val_loaders = []
     for val_data in opt.dataset.val.data:
         val_loaders.append(
             get_loader(
-                data_split='dev',
+                data_split="dev",
                 data_path=data_path,
                 data_info=val_data,
                 loader_name=opt.dataset.loader_name,
@@ -112,7 +116,7 @@ def get_loaders(data_path, local_rank, opt):
                 text_repr=opt.dataset.text_repr,
                 vocab_paths=opt.dataset.vocab_paths,
                 ngpu=1,
-                **opt.dataset.val
+                **opt.dataset.val,
             )
         )
     assert len(val_loaders) > 0
@@ -121,18 +125,18 @@ def get_loaders(data_path, local_rank, opt):
     for adapt_data in opt.dataset.adapt.data:
         adapt_loaders.append(
             get_loader(
-                data_split='train',
+                data_split="train",
                 data_path=data_path,
                 data_info=adapt_data,
-                loader_name='lang',
+                loader_name="lang",
                 local_rank=local_rank,
                 text_repr=opt.dataset.text_repr,
                 vocab_paths=opt.dataset.vocab_paths,
                 ngpu=1,
-                **opt.dataset.adapt
+                **opt.dataset.adapt,
             )
         )
-    logger.info(f'Adapt loaders: {len(adapt_loaders)}')
+    logger.info(f"Adapt loaders: {len(adapt_loaders)}")
     return train_loader, val_loaders, adapt_loaders
 
 

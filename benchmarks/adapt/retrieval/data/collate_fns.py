@@ -3,13 +3,17 @@ import torch
 from addict import Dict
 
 
-def split_array(iterable, splitters=[4,]):
+def split_array(
+    iterable,
+    splitters=[
+        4,
+    ],
+):
     import itertools
+
     return [
         torch.LongTensor(list(g))
-        for k, g in itertools.groupby(
-            iterable, lambda x: x in splitters
-        )
+        for k, g in itertools.groupby(iterable, lambda x: x in splitters)
         if not k
     ]
 
@@ -28,24 +32,30 @@ def default_padding(captions, device=None):
     return targets.to(device), lengths
 
 
-def stack(x,):
+def stack(
+    x,
+):
     return torch.stack(x, 0)
 
 
-def no_preprocess(x,):
+def no_preprocess(
+    x,
+):
     return x
 
 
-def to_numpy(x,):
+def to_numpy(
+    x,
+):
     return np.array(x)
 
 
 _preprocessing_fn = {
-    'image': stack,
-    'caption': default_padding,
-    'index': to_numpy,
-    'img_id': to_numpy,
-    'attributes': stack,
+    "image": stack,
+    "caption": default_padding,
+    "index": to_numpy,
+    "img_id": to_numpy,
+    "attributes": stack,
 }
 
 
@@ -68,9 +78,8 @@ def liwe_padding(captions):
 
 
 class Collate:
-
-    def __init__(self, text_repr='words'):
-        if text_repr == 'liwe':
+    def __init__(self, text_repr="words"):
+        if text_repr == "liwe":
             self.padding = liwe_padding
         else:
             self.padding = default_padding

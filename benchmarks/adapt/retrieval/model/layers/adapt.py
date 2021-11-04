@@ -3,18 +3,21 @@ import torch.nn as nn
 
 
 class ADAPT(nn.Module):
-
     def __init__(
-        self, value_size, k=None, query_size=None,
-        nonlinear_proj=False, groups=1,
+        self,
+        value_size,
+        k=None,
+        query_size=None,
+        nonlinear_proj=False,
+        groups=1,
     ):
-        '''
-            value_size (int): size of the features from the value matrix
-            query_size (int): size of the global query vector
-            k (int, optional): only used for non-linear projection
-            nonlinear_proj (bool): whether to project gamma and beta non-linearly
-            groups (int): number of feature groups (default=1)
-        '''
+        """
+        value_size (int): size of the features from the value matrix
+        query_size (int): size of the global query vector
+        k (int, optional): only used for non-linear projection
+        nonlinear_proj (bool): whether to project gamma and beta non-linearly
+        groups (int): number of feature groups (default=1)
+        """
         super().__init__()
 
         self.query_size = query_size
@@ -25,30 +28,30 @@ class ADAPT(nn.Module):
 
         if nonlinear_proj:
             self.fc_gamma = nn.Sequential(
-                nn.Linear(query_size, value_size//k),
+                nn.Linear(query_size, value_size // k),
                 nn.ReLU(inplace=True),
-                nn.Linear(value_size//k, value_size),
+                nn.Linear(value_size // k, value_size),
             )
 
             self.fc_beta = nn.Sequential(
-                nn.Linear(query_size, value_size//k),
+                nn.Linear(query_size, value_size // k),
                 nn.ReLU(inplace=True),
-                nn.Linear(value_size//k, value_size),
+                nn.Linear(value_size // k, value_size),
             )
         else:
             self.fc_gamma = nn.Sequential(
-                nn.Linear(query_size, value_size//groups),
+                nn.Linear(query_size, value_size // groups),
             )
 
             self.fc_beta = nn.Sequential(
-                nn.Linear(query_size, value_size//groups),
+                nn.Linear(query_size, value_size // groups),
             )
 
             # self.fc_gamma = nn.Linear(cond_vector_size, in_features)
             # self.fc_beta = nn.Linear(cond_vector_size, in_features)
 
     def forward(self, value, query):
-        '''
+        """
 
         Adapt embedding matrix (value) given a query vector.
         Dimension order is the same of the convolutional layers.
@@ -76,21 +79,15 @@ class ADAPT(nn.Module):
             This could be used for VQA or other tasks that don't require
             ranking all instances from a set.
 
-        '''
+        """
 
         B, D, _ = value.shape
         Bv, Dv = query.shape
 
-        value = value.view(
-            B, D//self.groups, self.groups, -1
-        )
+        value = value.view(B, D // self.groups, self.groups, -1)
 
-        gammas = self.fc_gamma(query).view(
-            Bv, Dv//self.groups, 1, 1
-        )
-        betas  = self.fc_beta(query).view(
-            Bv, Dv//self.groups, 1, 1
-        )
+        gammas = self.fc_gamma(query).view(Bv, Dv // self.groups, 1, 1)
+        betas = self.fc_beta(query).view(Bv, Dv // self.groups, 1, 1)
 
         normalized = value * (gammas + 1) + betas
         normalized = normalized.view(B, D, -1)

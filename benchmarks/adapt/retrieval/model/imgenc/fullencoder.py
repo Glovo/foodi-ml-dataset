@@ -1,4 +1,4 @@
-'''Neural Network Assembler and Extender'''
+"""Neural Network Assembler and Extender"""
 import types
 from typing import Dict, List
 
@@ -14,7 +14,6 @@ from .common import load_state_dict_with_replace
 
 
 class BaseFeatures(nn.Module):
-
     def __init__(self, model):
         super(BaseFeatures, self).__init__()
         self.conv1 = model.conv1
@@ -41,7 +40,6 @@ class BaseFeatures(nn.Module):
 
 
 class HierarchicalFeatures(nn.Module):
-
     def __init__(self, model):
         super().__init__()
         self.conv1 = model.conv1
@@ -69,8 +67,9 @@ class HierarchicalFeatures(nn.Module):
 
 
 class Aggregate(nn.Module):
-
-    def __init__(self, ):
+    def __init__(
+        self,
+    ):
         super(Aggregate, self).__init__()
 
     def forward(self, _input):
@@ -80,10 +79,12 @@ class Aggregate(nn.Module):
 
 
 class ImageEncoder(nn.Module):
-
     def __init__(
-        self, cnn, img_dim,
-        latent_size, pretrained=True,
+        self,
+        cnn,
+        img_dim,
+        latent_size,
+        pretrained=True,
     ):
         super().__init__()
         self.latent_size = latent_size
@@ -95,12 +96,12 @@ class ImageEncoder(nn.Module):
         """Extract image feature vectors."""
         if type(images) == dict:
             batch = images
-            assert 'image' in batch, 'Key image not in batch dictionary'
-            images = batch['image']
+            assert "image" in batch, "Key image not in batch dictionary"
+            images = batch["image"]
         # assuming that the precomputed features are already l2-normalized
         features = self.cnn(images)
         B, D, H, W = features.shape
-        features = features.view(B, D, H*W)
+        features = features.view(B, D, H * W)
         return features
 
     def load_state_dict(self, state_dict):
@@ -113,11 +114,17 @@ class ImageEncoder(nn.Module):
 
         super().load_state_dict(new_state)
 
+
 # tutorials/09 - Image Captioning
 class VSEPPEncoder(nn.Module):
-
-    def __init__(self, latent_size, finetune=False, cnn_type='vgg19',
-                 use_abs=False, no_imgnorm=False):
+    def __init__(
+        self,
+        latent_size,
+        finetune=False,
+        cnn_type="vgg19",
+        use_abs=False,
+        no_imgnorm=False,
+    ):
         """Load pretrained VGG19 and replace top fc layer."""
         super(VSEPPEncoder, self).__init__()
         self.latent_size = latent_size
@@ -128,7 +135,7 @@ class VSEPPEncoder(nn.Module):
         self.cnn = self.get_cnn(cnn_type, True)
 
         if finetune:
-            if cnn_type.startswith('alexnet') or cnn_type.startswith('vgg'):
+            if cnn_type.startswith("alexnet") or cnn_type.startswith("vgg"):
                 model.features = nn.DataParallel(model.features)
                 model.cuda()
             else:
@@ -139,16 +146,15 @@ class VSEPPEncoder(nn.Module):
             param.requires_grad = finetune
 
         # Replace the last fully connected layer of CNN with a new one
-        if cnn_type.startswith('vgg'):
+        if cnn_type.startswith("vgg"):
             self.fc = nn.Linear(
-                self.cnn.classifier._modules['6'].in_features,
-                latent_size
+                self.cnn.classifier._modules["6"].in_features, latent_size
             )
             self.cnn.classifier = nn.Sequential(
                 *list(self.cnn.classifier.children())[:-1]
             )
-        elif cnn_type.startswith('resnet'):
-            if hasattr(self.cnn, 'module'):
+        elif cnn_type.startswith("resnet"):
+            if hasattr(self.cnn, "module"):
                 self.fc = nn.Linear(self.cnn.module.fc.in_features, latent_size)
                 self.cnn.module.fc = nn.Sequential()
             else:
@@ -158,8 +164,7 @@ class VSEPPEncoder(nn.Module):
         self.init_weights()
 
     def get_cnn(self, arch, pretrained):
-        """Load a pretrained CNN and parallelize over GPUs
-        """
+        """Load a pretrained CNN and parallelize over GPUs"""
         if pretrained:
             print("=> using pre-trained model '{}'".format(arch))
             model = models.__dict__[arch](pretrained=True)
@@ -173,27 +178,25 @@ class VSEPPEncoder(nn.Module):
         """
         Handle the models saved before commit pytorch/vision@989d52a
         """
-        if 'cnn.classifier.1.weight' in state_dict:
-            state_dict['cnn.classifier.0.weight'] = state_dict[
-                'cnn.classifier.1.weight']
-            del state_dict['cnn.classifier.1.weight']
-            state_dict['cnn.classifier.0.bias'] = state_dict[
-                'cnn.classifier.1.bias']
-            del state_dict['cnn.classifier.1.bias']
-            state_dict['cnn.classifier.3.weight'] = state_dict[
-                'cnn.classifier.4.weight']
-            del state_dict['cnn.classifier.4.weight']
-            state_dict['cnn.classifier.3.bias'] = state_dict[
-                'cnn.classifier.4.bias']
-            del state_dict['cnn.classifier.4.bias']
+        if "cnn.classifier.1.weight" in state_dict:
+            state_dict["cnn.classifier.0.weight"] = state_dict[
+                "cnn.classifier.1.weight"
+            ]
+            del state_dict["cnn.classifier.1.weight"]
+            state_dict["cnn.classifier.0.bias"] = state_dict["cnn.classifier.1.bias"]
+            del state_dict["cnn.classifier.1.bias"]
+            state_dict["cnn.classifier.3.weight"] = state_dict[
+                "cnn.classifier.4.weight"
+            ]
+            del state_dict["cnn.classifier.4.weight"]
+            state_dict["cnn.classifier.3.bias"] = state_dict["cnn.classifier.4.bias"]
+            del state_dict["cnn.classifier.4.bias"]
 
         super(EncoderImageFull, self).load_state_dict(state_dict)
 
     def init_weights(self):
-        """Xavier initialization for the fully connected layer
-        """
-        r = np.sqrt(6.) / np.sqrt(self.fc.in_features +
-                                  self.fc.out_features)
+        """Xavier initialization for the fully connected layer"""
+        r = np.sqrt(6.0) / np.sqrt(self.fc.in_features + self.fc.out_features)
         self.fc.weight.data.uniform_(-r, r)
         self.fc.bias.data.fill_(0)
 
@@ -217,11 +220,15 @@ class VSEPPEncoder(nn.Module):
 
 
 class FullImageEncoder(nn.Module):
-
     def __init__(
-        self, cnn, img_dim, latent_size,
-        no_imgnorm=False, pretrained=True,
-        proj_regions=True, finetune=False
+        self,
+        cnn,
+        img_dim,
+        latent_size,
+        no_imgnorm=False,
+        pretrained=True,
+        proj_regions=True,
+        finetune=False,
     ):
         super(FullImageEncoder, self).__init__()
         self.latent_size = latent_size
@@ -248,11 +255,10 @@ class FullImageEncoder(nn.Module):
         # self.aggregate = Aggregate()
 
     def init_weights(self):
-        """Xavier initialization for the fully connected layer
-        """
+        """Xavier initialization for the fully connected layer"""
         import numpy as np
-        r = np.sqrt(6.) / np.sqrt(self.fc.in_features +
-                                  self.fc.out_features)
+
+        r = np.sqrt(6.0) / np.sqrt(self.fc.in_features + self.fc.out_features)
         self.fc.weight.data.uniform_(-r, r)
         self.fc.bias.data.fill_(0)
 
@@ -288,11 +294,15 @@ class FullImageEncoder(nn.Module):
 
         super(FullImageEncoder, self).load_state_dict(new_state)
 
-class FullHierImageEncoder(nn.Module):
 
+class FullHierImageEncoder(nn.Module):
     def __init__(
-        self, cnn, img_dim, latent_size,
-        no_imgnorm=False, pretrained=True,
+        self,
+        cnn,
+        img_dim,
+        latent_size,
+        no_imgnorm=False,
+        pretrained=True,
         proj_regions=True,
     ):
         super().__init__()
@@ -323,7 +333,7 @@ class FullHierImageEncoder(nn.Module):
         vectors = [self.max_pool(x) for x in [a, b, c, d]]
         d = self.avg_pool(d)
         vectors = torch.cat(vectors + [d], dim=1)
-        vectors = vectors.squeeze(-1)#.squeeze(-1)
+        vectors = vectors.squeeze(-1)  # .squeeze(-1)
         vectors = vectors.permute(0, 2, 1)
         latent = self.fc(vectors)
 

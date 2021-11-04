@@ -18,8 +18,12 @@ def load_state_dict_with_replace(state_dict, own_state):
 
 
 class SCANImagePrecomp(nn.Module):
-
-    def __init__(self, img_dim, latent_size, no_imgnorm=False, ):
+    def __init__(
+        self,
+        img_dim,
+        latent_size,
+        no_imgnorm=False,
+    ):
         super(SCANImagePrecomp, self).__init__()
         self.latent_size = latent_size
         self.no_imgnorm = no_imgnorm
@@ -28,17 +32,15 @@ class SCANImagePrecomp(nn.Module):
         self.init_weights()
 
     def init_weights(self):
-        """Xavier initialization for the fully connected layer
-        """
-        r = np.sqrt(6.) / np.sqrt(self.fc.in_features +
-                                  self.fc.out_features)
+        """Xavier initialization for the fully connected layer"""
+        r = np.sqrt(6.0) / np.sqrt(self.fc.in_features + self.fc.out_features)
         self.fc.weight.data.uniform_(-r, r)
         self.fc.bias.data.fill_(0)
 
     def forward(self, batch):
         """Extract image feature vectors."""
         # assuming that the precomputed features are already l2-normalized
-        images = batch['image'].to(self.device)
+        images = batch["image"].to(self.device)
         features = self.fc(images)
 
         # normalize in the joint embedding space
@@ -59,8 +61,12 @@ class SCANImagePrecomp(nn.Module):
 
 
 class SimplePrecomp(nn.Module):
-
-    def __init__(self, img_dim, latent_size, no_imgnorm=False, ):
+    def __init__(
+        self,
+        img_dim,
+        latent_size,
+        no_imgnorm=False,
+    ):
         super(SimplePrecomp, self).__init__()
         self.latent_size = latent_size
         self.no_imgnorm = no_imgnorm
@@ -69,17 +75,15 @@ class SimplePrecomp(nn.Module):
         self.init_weights()
 
     def init_weights(self):
-        """Xavier initialization for the fully connected layer
-        """
-        r = np.sqrt(6.) / np.sqrt(self.fc.in_features +
-                                  self.fc.out_features)
+        """Xavier initialization for the fully connected layer"""
+        r = np.sqrt(6.0) / np.sqrt(self.fc.in_features + self.fc.out_features)
         self.fc.weight.data.uniform_(-r, r)
         self.fc.bias.data.fill_(0)
 
     def forward(self, batch):
         """Extract image feature vectors."""
         # assuming that the precomputed features are already l2-normalized
-        images = batch['image'].to(self.device)
+        images = batch["image"].to(self.device)
         features = self.fc(images)
         features = nn.LeakyReLU(0.1)(features)
 
@@ -101,7 +105,6 @@ class SimplePrecomp(nn.Module):
 
 
 class VSEImageEncoder(nn.Module):
-
     def __init__(self, img_dim, latent_size, no_imgnorm=False, device=None):
         super(VSEImageEncoder, self).__init__()
         self.device = device
@@ -116,9 +119,9 @@ class VSEImageEncoder(nn.Module):
         """Extract image feature vectors."""
         # assuming that the precomputed features are already l2-normalized
 
-        images = batch['image'].to(self.device).to(self.device)
+        images = batch["image"].to(self.device).to(self.device)
 
-        images = self.pool(images.permute(0, 2, 1)) # Global pooling
+        images = self.pool(images.permute(0, 2, 1))  # Global pooling
         images = images.permute(0, 2, 1)
         features = self.fc(images)
         # normalize in the joint embedding space
@@ -136,4 +139,3 @@ class VSEImageEncoder(nn.Module):
         )
 
         super(VSEImageEncoder, self).load_state_dict(new_state)
-
