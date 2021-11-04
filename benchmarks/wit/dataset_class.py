@@ -1,3 +1,5 @@
+import warnings
+
 import pandas as pd
 from PIL import Image
 from torch.utils.data import Dataset
@@ -16,9 +18,10 @@ class FoodiMLDataset(Dataset):
                 ),
             ]
         )
-
+        warnings.simplefilter("ignore")
     def __getitem__(self, index):
-        img = self.transform(Image.open(self.df["s3_path"].iloc[index]).convert("RGB"))
+        with warnings.catch_warnings():
+            img = self.transform(Image.open(self.df["s3_path"].iloc[index]).convert("RGB"))
         caption = self.df["caption"].iloc[index]
 
         return {"img": img, "caption": caption}
