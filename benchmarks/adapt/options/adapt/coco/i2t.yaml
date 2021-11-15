@@ -1,0 +1,29 @@
+__include__: ../abstract.yaml
+exp:
+  outpath: logs/coco_precomp/adapt_i2t/
+  resume: null # last, best_[...], or empty (from scratch)
+dataset:
+  vocab_paths: [.vocab_cache/coco_precomp.json]
+  train:
+    data: coco_precomp.en
+  val: 
+    data: [coco_precomp.en]
+model:
+  txt_enc:    
+    params:      
+      glove_path: '.vocab_cache/glove_coco_precomp.json.pkl'
+  similarity:
+    name: adapt_i2t
+    params:
+      latent_size: 1024
+      gamma: 5
+optimizer:
+  name: adamax
+  params:
+    lr: 0.0007
+    gradual_warmup_steps: [0.5, 2.0, 16000] #torch.linspace
+    lr_decay_epochs: [40000, 80000, 8000] #range 
+    lr_decay_rate: .25
+  lr_scheduler: 
+    name: null
+  grad_clip: 2.

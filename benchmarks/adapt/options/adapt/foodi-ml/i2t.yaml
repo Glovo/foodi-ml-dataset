@@ -1,0 +1,27 @@
+__include__: ../abstract.yaml
+exp:
+  outpath: runs/global_model/ #runs/sample_foodi_epoch_0/ #logs/foodi-ml/adapt_i2t/
+dataset:
+  vocab_paths: [.vocab_cache/foodiml_vocab.json,]
+  train:
+    data: foodiml.es #f30k_precomp.en
+    workers: 1
+    batch_size: 20 # 128 batch size crashes the GPU memory
+  val:
+    data: [foodiml.es] #f30k_precomp.en
+    workers: 1
+    batch_size: 1 #30
+    limit: 5000
+model:
+  #txt_enc:
+    #params:
+      #glove_path: '/home/ec2-user/SageMaker/dataset/glove-foodiml.pkl'
+  similarity:
+    name: adapt_i2t
+    params:
+       latent_size: 2048
+       k: 36
+       gamma: 10
+       train_gamma: False
+       device: cuda
+    device: cuda

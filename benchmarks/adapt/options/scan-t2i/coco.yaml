@@ -1,0 +1,18 @@
+__include__: 'scan.yaml'
+exp:
+  outpath: logs/coco_precomp.en/scan-t2i-nobeta/
+dataset:  
+  vocab_paths: [.vocab_cache/coco_precomp.json,]
+  train:
+    data: coco_precomp.en
+    workers: 0
+  val: 
+    data: [coco_precomp.en]
+    workers: 0  
+optimizer:
+  params:
+    lr: .0005
+  lr_scheduler: 
+    params:
+      step_size: 40000
+      gamma: 0.1

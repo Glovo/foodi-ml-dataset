@@ -1,0 +1,64 @@
+exp:
+  resume: null # last, best_[...], or empty (from scratch)
+dataset:  
+  vocab_paths: [.vocab_cache/coco_precomp.json,]
+  text_repr: word
+  loader_name: precomp
+  train:
+    workers: 1
+    batch_size: 128
+  val:
+    workers: 1
+    batch_size: 64
+  adapt:  
+    data: []    
+model:
+  latent_size: 1024
+  freeze_modules: []  
+  txt_enc:
+    name: gru
+    params:
+      embed_dim: 300
+      use_bi_gru: true
+    pooling: none
+    devices: [cuda,]
+  img_enc:
+    name: scan
+    params:
+      img_dim: 2048
+    devices: [cuda,]
+    pooling: none    
+  similarity:
+    name: scan_t2i
+    params:
+      device: cuda 
+      feature_norm: clipped_l2norm
+      smooth: 9
+      agg_function: Mean
+    device: cuda  
+  criterion:
+    margin: 0.2
+    max_violation: False
+    beta: 0.997
+optimizer:
+  name: adam
+  import: retrieval.optimizers.factory
+  params:
+    lr: 0.0002
+  lr_scheduler:
+    name: step
+    params:
+      step_size: 15000
+      gamma: 0.1
+  grad_clip: 2.
+engine:
+  eval_before_training: False
+  debug: False
+  print_freq: 10
+  nb_epochs: 30
+  early_stop: 50
+  valid_interval: 500
+misc: # TODO
+  cuda: True
+  distributed: False # TODO 
+  seed: 1337 # TODO
