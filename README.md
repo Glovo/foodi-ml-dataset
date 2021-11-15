@@ -61,8 +61,16 @@ Our dataset is managed by the DataFrame `glovo-foodi-ml-dataset.csv`. This datas
 A notebook analyzing several dataset statistics is provided in `notebooks/FooDI-ML Dataset Stats Analytics.ipynb`.
 
 # Benchmark
-To run the benchmark included in the original paper one must follow the procedure listed in the following [link](benchmarks/adapt/README.md).
+Our paper includes 3 benchmarks: 
+
+**Text to Image/Image to Text Retrieval**
+* [WIT](benchmarks/wit/README.md)
+* [CLIP](benchmarks/clip/CLIP-MultiLingual-FoodiML-SpanishSample.ipynb)
+
+**Conditional Image Generation**
+* SAGAN
 
 The hyperparameters of the model are included here [link](benchmarks/adapt/options/adapt/foodi-ml/i2t.yaml)
+
 # Citation
 You can cite our paper in arxiv: https://arxiv.org/abs/2110.02035
