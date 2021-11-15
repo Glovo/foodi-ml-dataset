@@ -17,7 +17,7 @@ import torchvision.transforms as transforms
 from torch.utils.data import Dataset
 from torchvision.datasets import CIFAR10, STL10
 from torchvision.datasets import ImageFolder
-from data_utils.our_datasets import FoodiMLDataset
+from data_utils.our_datasets import AnonymizedDataset
 
 
 
@@ -100,8 +100,8 @@ class LoadDataset(Dataset):
                                 train=self.train,
                                 download=self.download)
             
-        elif self.dataset_name == 'foodi-ml':
-            self.data = FoodiMLDataset(dataset_path=self.data_path, train=self.train)
+        elif self.dataset_name == 'ANONYMIZED':
+            self.data = AnonymizedDataset(dataset_path=self.data_path, train=self.train)
             self.labels = self.data.labels
         else:
             mode = 'train' if self.train == True else 'valid'
@@ -118,10 +118,10 @@ class LoadDataset(Dataset):
 
 
     def __getitem__(self, index):
-        if self.hdf5_path is None and self.dataset_name != "foodi-ml":
+        if self.hdf5_path is None and self.dataset_name != "ANONYMIZED":
             img, label = self.data[index] # label in our case will be a caption
             img, label = self.transforms(img), int(label)
-        elif self.dataset_name == "foodi-ml":
+        elif self.dataset_name == "ANONYMIZED":
             img, label = self.data[index]
             img = self.transforms(img)
         else:

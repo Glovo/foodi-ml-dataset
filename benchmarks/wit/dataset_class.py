@@ -6,7 +6,7 @@ from torch.utils.data import Dataset
 from torchvision.transforms import transforms
 
 
-class FoodiMLDataset(Dataset):
+class AnonymizedDataset(Dataset):
     def __init__(self, df: pd.DataFrame, img_size):
         self.df = df
         self.transform = transforms.Compose(
@@ -30,7 +30,7 @@ class FoodiMLDataset(Dataset):
         return self.df.shape[0]
 
 
-class FoodiMLDatasetText(Dataset):
+class AnonymizedDatasetText(Dataset):
     # variant of the dataset that returns only text
     def __init__(self, df: pd.DataFrame):
         self.df = df

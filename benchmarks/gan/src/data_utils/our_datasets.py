@@ -13,10 +13,10 @@ from PIL import PngImagePlugin
 LARGE_ENOUGH_NUMBER = 100
 PngImagePlugin.MAX_TEXT_CHUNK = LARGE_ENOUGH_NUMBER * (1024**2)
 
-class FoodiMLDataset(Dataset):
+class AnonymizedDataset(Dataset):
     def __init__(self, data_path, train):
 
-        self.df = pd.read_csv(os.path.join(data_path, "foodi-ml-train.csv"))
+        self.df = pd.read_csv(os.path.join(data_path, "anonymized-dataset-train.csv"))
         
         if train:
             self.df = self.df[self.df["split"]!="val"]
