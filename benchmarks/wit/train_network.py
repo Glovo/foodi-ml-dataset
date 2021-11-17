@@ -6,7 +6,7 @@ from PIL import PngImagePlugin
 from torch.nn import CrossEntropyLoss
 from torch.utils.data import DataLoader
 
-from benchmarks.wit.dataset_class import FoodiMLDataset
+from benchmarks.wit.dataset_class import AnonymizedDataset
 from benchmarks.wit.network import WIT_NN
 # set PIL to handle large images
 from benchmarks.wit.trainer import train_wit_network
@@ -14,7 +14,7 @@ from benchmarks.wit.trainer import train_wit_network
 LARGE_ENOUGH_NUMBER = 100
 PngImagePlugin.MAX_TEXT_CHUNK = LARGE_ENOUGH_NUMBER * (1024 ** 2)
 
-# make sure to run the code from the foodi-ml-dataset folder
+# make sure to run the code from the DATASET_NAME folder
 df = pd.read_csv("spanish_subset.csv")
 # rename images
 root_path = "./spanish_subset/"
@@ -30,7 +30,7 @@ epochs = 20
 epoch_start = 0
 
 # define torch dataset and dataloader
-ds_train = FoodiMLDataset(df_train, (224, 224))
+ds_train = AnonymizedDataset(df_train, (224, 224))
 dataloader_train = DataLoader(
     dataset=ds_train, batch_size=batch_size, drop_last=True, shuffle=True, num_workers=16
 )

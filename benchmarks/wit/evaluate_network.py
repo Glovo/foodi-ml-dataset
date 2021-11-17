@@ -4,7 +4,7 @@ import pandas as pd
 from PIL import PngImagePlugin
 from torch.utils.data import DataLoader
 
-from benchmarks.wit.dataset_class import FoodiMLDataset, FoodiMLDatasetText
+from benchmarks.wit.dataset_class import AnonymizedDataset, AnonymizedDatasetText
 from benchmarks.wit.evaluator import (adapter, compute_sim_matrix,
                                       compute_valid_answers,
                                       evaluate_bigdata_new_metrics)
@@ -16,7 +16,7 @@ device = "cuda"
 epochs_trained = 19
 PngImagePlugin.MAX_TEXT_CHUNK = LARGE_ENOUGH_NUMBER * (1024 ** 2)
 
-# make sure to run the code from the foodi-ml-dataset folder
+# make sure to run the code from the DATASET_NAME folder
 df = pd.read_csv("spanish_subset.csv")
 # rename images
 root_path = "./spanish_subset/"
@@ -28,8 +28,8 @@ answers = compute_valid_answers(df_val)
 adapter = adapter(df_val)
 adapter = adapter.get_adapter()
 
-ds_val = FoodiMLDataset(df_val, (224, 224))
-ds_val_textonly = FoodiMLDatasetText(df_val)
+ds_val = AnonymizedDataset(df_val, (224, 224))
+ds_val_textonly = AnonymizedDatasetText(df_val)
 # batch size here can be increased for speed, we use here a fast divisor 509
 dataloader_val = DataLoader(dataset=ds_val, batch_size=509, drop_last=True)
 dataloader_val_textonly = DataLoader(
