@@ -8,9 +8,8 @@ from PIL import PngImagePlugin
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-from benchmarks.wit.dataset_class import FoodiMLDataset, FoodiMLDatasetText
-from benchmarks.wit.evaluator import (adapter,
-                                      compute_valid_answers)
+from benchmarks.wit.dataset_class import FoodiMLDataset
+from benchmarks.wit.evaluator import adapter, compute_valid_answers
 from benchmarks.wit.network import load_saved_model
 
 LARGE_ENOUGH_NUMBER = 100
