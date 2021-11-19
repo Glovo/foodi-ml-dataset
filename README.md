@@ -12,6 +12,8 @@ The dataset also includes widely spoken languages such as Spanish and English.
 
 The DATASET_NAME dataset is offered under the [BY-NC-SA license](https://creativecommons.org/licenses/by-nc-sa/2.0/ "BY-NC-SA license").
 
+**NOTE: The url of the S3 bucket hosting this dataset has been anonymized and will be made available meeting camera-ready deadline.**
+
 # 1. Download the dataset
 The DATASET_NAME dataset is hosted in a S3 bucket in AWS. Therefore AWS CLI is needed to download it. 
 Our dataset is composed of:
