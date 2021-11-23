@@ -68,10 +68,11 @@ A notebook analyzing several dataset statistics is provided in `notebooks/FooDI-
 Our paper includes 3 benchmarks:
 **Text to Image/Image to Text Retrieval**
 * [WIT](benchmarks/wit/README.md)
-* [CLIP](benchmarks/clip/CLIP-MultiLingual-FoodiML-SpanishSample.ipynb)
+* [CLIP](benchmarks/clip/README.md)
 
 **Conditional Image Generation**
-* SAGAN
+* [SAGAN](benchmarks/gan/README-foodi-ml.md)
+
 
 # Citation
 You can cite our paper in arxiv: https://arxiv.org/abs/2110.02035
