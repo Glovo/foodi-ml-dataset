@@ -1,7 +1,6 @@
 # Conditional Image Generation DATASET_NAME
 
-In order to conditionally generate images, we trained SAGAN to generate different type of pizza images in a small subset of our dataset.
-
+In order to conditionally generate images, we trained SAGAN to generate different type of pizza images in a small subset of our dataset. We used the well known framework PyTorch-Studio GAN to do it, so the instructions in the README file of this folder must be followed beforehand. 
 
 
 # Download pizza subset
