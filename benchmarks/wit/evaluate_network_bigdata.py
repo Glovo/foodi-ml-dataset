@@ -28,18 +28,20 @@ def generate_embeddings(model, dataloader_val, EMBEDDING_SIZE=512):
     dataloader_val : torch.utils.data.DataLoader
         Dataloader for the validation set.
 
-    Returns
-    -------
-    img_embs : torch.Tensor
-        tensor of size (len(dataloader_val.dataset), EMBEDDING_SIZE) containing all image embeddings for all the dataset.
+    Returns -------
+    img_embs : torch.Tensor tensor of size (len(
+    dataloader_val.dataset), EMBEDDING_SIZE) containing all image embeddings
+    for all the dataset.
 
     txt_embs : torch.Tensor
-        tensor of size (len(dataloader_val.dataset), EMBEDDING_SIZE) containing all text embeddings for all the dataset.
+    tensor of size (len(dataloader_val.dataset),
+    EMBEDDING_SIZE) containing all text embeddings for all the dataset.
     """
     batch_size = dataloader_val.batch_size
     img_embs = torch.zeros(len(dataloader_val.dataset), EMBEDDING_SIZE)
     txt_embs = torch.zeros(len(dataloader_val.dataset), EMBEDDING_SIZE)
-    assert len(len(dataloader_val.dataset)) % batch_size == 0, f"batch size similarity ({batch_size}) must be divisor of num_embeddings ({len(dataloader_val.dataset)}), here's a list of some of them below 1000 {compute_divisors(len(dataloader_val.dataset))}"
+    assert len(len(dataloader_val.dataset)) % batch_size == 0, f"batch size " \
+                                                               f"similarity ({batch_size}) must be divisor of num_embeddings ({len(dataloader_val.dataset)}), here's a list of some of them below 1000 {compute_divisors(len(dataloader_val.dataset))} "
     for i, batch in tqdm(enumerate(dataloader_val)):
         img_emb, txt_emb = model.forward_embeds(batch)
         img_embs[i * batch_size: i * batch_size + batch_size,
@@ -80,7 +82,7 @@ def sim_matrix(a, b):
 def compute_metrics_sequentially(im, tx, valid_answers, adapter,
                                  metric="t2i",
                                  batch_size_similarity=70):
-    """Compute recall at k for
+    """Compute recall at k for the embeddings of images and text given by im and tx respectively.
 
     Parameters
     ----------
@@ -150,8 +152,12 @@ if __name__ == '__main__':
     parser.add_argument("--dataset-path", type=str,
                         help="Path of the downloaded dataset",
                         default="../../../dataset")
-    parser.add_argument("--code-path", type=str, help="Path to DATASET_NAME repository", default="../../")
-    parser.add_argument("--model-weights", type=str, help="Path to the model weights", default="./trained_model_30.pth")
+    parser.add_argument("--code-path", type=str,
+                        help="Path to DATASET_NAME repository",
+                        default="../../")
+    parser.add_argument("--model-weights",
+                        type=str, help="Path to the model weights",
+                        default="./trained_model_30.pth")
 
     args = parser.parse_args()
     DATASET_PATH = args.dataset_path
