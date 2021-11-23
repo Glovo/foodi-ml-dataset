@@ -1,38 +1,42 @@
 import os
-
+import argparse
 import pandas as pd
 import torch
 from PIL import PngImagePlugin
 from torch.nn import CrossEntropyLoss
 from torch.utils.data import DataLoader
-
 from benchmarks.wit.dataset_class import FoodiMLDataset
 from benchmarks.wit.network import WIT_NN
-# set PIL to handle large images
 from benchmarks.wit.trainer import train_wit_network
 
+# set PIL to handle large images
 LARGE_ENOUGH_NUMBER = 100
 PngImagePlugin.MAX_TEXT_CHUNK = LARGE_ENOUGH_NUMBER * (1024 ** 2)
 
-# make sure to run the code from the foodi-ml-dataset folder
-df = pd.read_csv("spanish_subset.csv")
-# rename images
-root_path = "./spanish_subset/"
-df["s3_path"] = df["s3_path"].apply(lambda x: os.path.join(root_path, x.split("/")[-1]))
-# drop duplicates of [target,feats]
-df_train = df[df.split == "train"]
-df_train = df_train.drop_duplicates(subset=["hash", "caption"])
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
-# define batch size and device for training
-batch_size = 50
-device = "cuda"
-epochs = 20
+parser = argparse.ArgumentParser()
+parser.add_argument("--dataset-path", type=str,
+                    help="Path of the downloaded dataset",
+                    default="/mnt/data/foodi-ml/")
+parser.add_argument('--epochs', type=int, default=50)
+parser.add_argument('--batch-size', type=int, default=160)
+
+args = parser.parse_args()
+DATASET_PATH = args.dataset_path
+epochs = args.epochs
+batch_size = args.batch_size
+
+df = pd.read_parquet(os.path.join(DATASET_PATH, 'samples', 'split=train'))
+df_train = df.drop_duplicates(subset=["hash", "caption"])
+print(f"Number of training samples {df_train.shape[0]}")
+
 epoch_start = 0
 
 # define torch dataset and dataloader
 ds_train = FoodiMLDataset(df_train, (224, 224))
 dataloader_train = DataLoader(
-    dataset=ds_train, batch_size=batch_size, drop_last=True, shuffle=True, num_workers=16
+    dataset=ds_train, batch_size=batch_size, drop_last=True, shuffle=True,num_workers=16
 )
 
 # model definition
@@ -100,8 +104,6 @@ model.language_head.network = model.language_head.network.to(device)
 model.cnn.network = model.cnn.network.to(device)
 
 # train the WIT model
-
-
 model = train_wit_network(
     model, device, dataloader_train, optimizer, criterion, epochs, epoch_start=epoch_start
 )
