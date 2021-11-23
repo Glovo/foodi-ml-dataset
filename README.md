@@ -41,6 +41,10 @@ If you do not have AWS CLI already installed, please download the latest version
    python scripts/rename_images.py --output-dir ENTER_DESTINATION_PATH
    ```
 
+4. Run the script `scripts/dataset_preprocess.py` in order to filter the dataset:
+
+```python scripts/dataset_preprocess.py --dataset-path <ENTER_PATH_TO_DATSET_FOLDER>```
+
 # Getting started
 Our dataset is managed by the DataFrame `glovo-foodi-ml-dataset.csv`. This dataset contains the following columns:
 
@@ -60,17 +64,14 @@ Our dataset is managed by the DataFrame `glovo-foodi-ml-dataset.csv`. This datas
 # Dataset Statistics
 A notebook analyzing several dataset statistics is provided in `notebooks/FooDI-ML Dataset Stats Analytics.ipynb`.
 
-# Benchmark
-Our paper includes 3 benchmarks: 
-
+# Benchmarks
+Our paper includes 3 benchmarks:
 **Text to Image/Image to Text Retrieval**
 * [WIT](benchmarks/wit/README.md)
 * [CLIP](benchmarks/clip/CLIP-MultiLingual-FoodiML-SpanishSample.ipynb)
 
 **Conditional Image Generation**
 * SAGAN
-
-The hyperparameters of the model are included here [link](benchmarks/adapt/options/adapt/foodi-ml/i2t.yaml)
 
 # Citation
 You can cite our paper in arxiv: https://arxiv.org/abs/2110.02035
