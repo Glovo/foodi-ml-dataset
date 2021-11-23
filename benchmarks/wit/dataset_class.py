@@ -1,10 +1,8 @@
-import warnings
-
 import pandas as pd
 from PIL import Image
 from torch.utils.data import Dataset
 from torchvision.transforms import transforms
-
+import warnings
 
 class AnonymizedDataset(Dataset):
     def __init__(self, df: pd.DataFrame, img_size):
@@ -19,6 +17,7 @@ class AnonymizedDataset(Dataset):
             ]
         )
         warnings.simplefilter("ignore")
+
     def __getitem__(self, index):
         with warnings.catch_warnings():
             img = self.transform(Image.open(self.df["s3_path"].iloc[index]).convert("RGB"))

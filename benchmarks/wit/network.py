@@ -1,4 +1,3 @@
-# define embedding heads similar to what ponc did
 import torch
 import torch.nn as nn
 import torchvision

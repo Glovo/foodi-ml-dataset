@@ -42,6 +42,10 @@ If you do not have AWS CLI already installed, please download the latest version
    python scripts/rename_images.py --output-dir ENTER_DESTINATION_PATH
    ```
 
+4. Run the script `scripts/dataset_preprocess.py` in order to filter the dataset:
+
+```python scripts/dataset_preprocess.py --dataset-path <ENTER_PATH_TO_DATSET_FOLDER>```
+
 # Getting started
 Our dataset is managed by the DataFrame `DATAFRAME_NAME`. This dataset contains the following columns:
 
@@ -66,7 +70,7 @@ Our paper includes 3 benchmarks:
 
 **Text to Image/Image to Text Retrieval**
 * [WIT](benchmarks/wit/README.md)
-* [CLIP](benchmarks/clip/CLIP-MultiLingual-DATASET_NAME.ipynb)
+* [CLIP](benchmarks/clip/README.md)
 
 **Conditional Image Generation**
-* SAGAN
+* [SAGAN](benchmarks/gan/README-foodi-ml.md)
