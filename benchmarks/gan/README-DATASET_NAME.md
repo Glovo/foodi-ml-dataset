@@ -1,4 +1,4 @@
-# Conditional Image Generation Foodi-ML
+# Conditional Image Generation DATASET_NAME
 
 In order to conditionally generate images, we trained SAGAN to generate different type of pizza images in a small subset of our dataset.
 
@@ -9,11 +9,11 @@ In order to conditionally generate images, we trained SAGAN to generate differen
 ## 1. Download the dataframe
 Please download the dataframe containing the pizza images and their labels.
 
-```aws s3 cp s3://glovo-products-dataset-d1c9720d/pizza_subset.csv ENTER_DESTINATION_PATH --no-sign-request```
+```aws s3 cp s3://BUCKET_NAME/pizza_subset.csv ENTER_DESTINATION_PATH --no-sign-request```
 
 ## 2. Download and unzip the images
 
-```aws s3 cp s3://glovo-products-dataset-d1c9720d/pizza_subset.zip ENTER_DESTINATION_PATH --no-sign-request```
+```aws s3 cp s3://BUCKET_NAME/pizza_subset.zip ENTER_DESTINATION_PATH --no-sign-request```
 
 ```unzip pizza_subset.zip```
 
@@ -21,7 +21,7 @@ Please download the dataframe containing the pizza images and their labels.
 By running this command we train SAGAN using the configuration specified in the config file SAGAN.json. Additionally, the fields listed below need to be modified as well in the SAGAN.json file.
 ```
 "data_processing":{ 
-      "dataset_name": "foodi-ml",
+      "dataset_name": "DATASET_NAME",
       "data_path": "DATASET_PATH",
 ```
 

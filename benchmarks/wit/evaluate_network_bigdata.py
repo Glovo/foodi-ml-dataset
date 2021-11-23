@@ -9,7 +9,7 @@ from PIL import PngImagePlugin
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-from benchmarks.wit.dataset_class import FoodiMLDataset
+from benchmarks.wit.dataset_class import AnonymizedDataset
 from benchmarks.wit.evaluator import adapter, compute_valid_answers
 from benchmarks.wit.network import load_saved_model
 
@@ -142,7 +142,7 @@ def compute_metrics_sequentially(im, tx, valid_answers, adapter,
 
 if __name__ == '__main__':
     """
-    This script computes the metrics for the validation set of foodi-ml-dataset. To run this script:
+    This script computes the metrics for the validation set of DATASET_NAME. To run this script:
     python benchmarks/wit/evaluate_network_bigdata.py --dataset-path PATH_TO_DATASET_FOLDER --code-path PATH_TO_REPO_FOLDER --model-weights PATH_TO_MODEL_WEIGHTS
     """
 
@@ -176,7 +176,7 @@ if __name__ == '__main__':
     adapter = adapter(df_val)
     adapter = adapter.get_adapter()
 
-    ds_val = FoodiMLDataset(df_val, (224, 224))
+    ds_val = AnonymizedDataset(df_val, (224, 224))
 
     BATCH_SIZE_VALIDATION = 70 # optimized for a machine with 1 GPU and 32 GB
     dataloader_val = DataLoader(dataset=ds_val,

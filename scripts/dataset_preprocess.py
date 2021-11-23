@@ -4,10 +4,10 @@ import argparse
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset-path', type=str, default="/mnt/data/foodi-ml/", help="Folder where the CSV and the images were downloaded.")
+    parser.add_argument('--dataset-path', type=str, default="/mnt/data/DATSET_NAME/", help="Folder where the CSV and the images were downloaded.")
     args = parser.parse_args()
     PATH_DATA = args.dataset_path
-    DATASET_CSV = 'glovo-foodi-ml-dataset.csv'
+    DATASET_CSV = 'DATAFRAME_NAME.csv'
 
     # READ CSV
     print("Reading CSV...")

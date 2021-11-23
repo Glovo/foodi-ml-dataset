@@ -6,7 +6,7 @@ In this README we give a detailed list of the steps require to replicate the res
 
 Our experiments run in `python3`. To install the required dependencies, we recommend creating an environment:
 
-```python3 -m venv foodi-ml-venv```
+```python3 -m venv DATASET_NAME-venv```
 
 ```pip install -r benchmarks/wit/requirements.txt```
 
@@ -33,4 +33,4 @@ In order to replicate our results, the dataset must be preprocessed first in the
 * Preprocess the different text fields that compose our dataset and aggregate them to one single column called caption. Please note that this is an algorithm based decision and researchers can choose freely how they use the different text fields of our dataset.
 
 ## 3. Evaluating CLIP
-In order to evaluate CLIP on the Foodi-ML-dataset, please run the notebook `CLIP-MultiLingual-FoodiML-SpanishSample.ipynb`.
+In order to evaluate CLIP on the DATASET_NAME-dataset, please run the notebook `CLIP-MultiLingual-DATASET_NAME.ipynb`.

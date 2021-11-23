@@ -14,13 +14,13 @@ our algorithm (product_name + collection_section + product_description).
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset-path', type=str, default="/mnt/data/foodi-ml/",
+    parser.add_argument('--dataset-path', type=str, default="/mnt/data/DATASET_NAME/",
                         help="Folder where the CSV and the images were "
                              "downloaded.")
     args = parser.parse_args()
     PATH_DATA = args.dataset_path
     PATH_PARQUET = os.path.join(PATH_DATA, 'samples')
-    DATASET_CSV = 'glovo-foodi-ml-dataset.csv'
+    DATASET_CSV = 'DATAFRAME_NAME.csv'
 
     # READ CSV
     print("Reading CSV")

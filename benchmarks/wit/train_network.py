@@ -19,7 +19,7 @@ device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cp
 parser = argparse.ArgumentParser()
 parser.add_argument("--dataset-path", type=str,
                     help="Path of the downloaded dataset",
-                    default="/mnt/data/foodi-ml/")
+                    default="/mnt/data/DATASET_NAME/")
 parser.add_argument('--epochs', type=int, default=50)
 parser.add_argument('--batch-size', type=int, default=160)
 

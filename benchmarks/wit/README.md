@@ -6,7 +6,7 @@ In this README we give a detailed list of the steps require to replicate the res
 
 Our experiments run in `python3`. To install the required dependencies, we recommend creating an environment:
 
-1. ```python3 -m venv foodi-ml-venv```
+1. ```python3 -m venv DATASET_NAME-ml-venv```
 
 
 2. ```pip install -r benchmarks/wit/requirements.txt```
@@ -37,7 +37,7 @@ In order to replicate our results, the dataset must be preprocessed first in the
 
 ## 3. Training the network
 
-To train the WIT network in the Foodi-ML-dataset, please run:
+To train the WIT network in the DATASET_NAME, please run:
 
 ```python benchmarks/wit/train_network.py --dataset-path <ENTER_PATH_TO_DATASET_FOLDER> --epochs 50 --batch-size 160```
 
@@ -45,6 +45,6 @@ This will save the weights of the network that will be later used for evaluation
 
 ## 4. Evaluating WIT
 
-In order to evaluate WIT over the Foodi-ML-Dataset, please run this script pointing to the best network's weights.
+In order to evaluate WIT over the DATASET_NAME, please run this script pointing to the best network's weights.
 
 ```python benchmarks/wit/evaluate_network_bigdata.py --dataset-path <PATH_TO_DATASET_FOLDER> --code-path <PATH_TO_REPO_FOLDER> --model-weights <PATH_TO_MODEL_WEIGHTS>```
