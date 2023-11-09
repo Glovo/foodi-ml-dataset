@@ -10,4 +10,4 @@ boto3==1.19.3
 sentence-transformers==2.1.0
 Pillow==9.0.0
 matplotlib
-pyarrow==6.0.0
+pyarrow==14.0.1
