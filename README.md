@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🛠️ foodi-ml-dataset
+# foodi-ml-dataset
 
 **Download, prepare and benchmark FooDI-ML, Glovo's public multilingual food and grocery image–text dataset**
 
@@ -9,13 +9,13 @@ the dataset's CSV at your local images and filter it, a dataset-statistics noteb
 paper's three benchmarks. It is **not** the dataset itself (the CSV and images live in a public S3 bucket),
 and it is not a service: nothing here is built, deployed or run by CI.
 
-[![Python](https://img.shields.io/badge/Python-3-3776AB?logo=python&logoColor=white)](benchmarks/wit/requirements.txt)
-[![PyTorch](https://img.shields.io/badge/PyTorch-1.7.1-EE4C2C?logo=pytorch&logoColor=white)](benchmarks/wit/requirements.txt)
+[![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)](benchmarks/wit/requirements.txt)
+[![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white)](benchmarks/wit/requirements.txt)
 [![Amazon S3](https://img.shields.io/badge/Data-public_S3_bucket-569A31?logo=amazons3&logoColor=white)](#data-model)
 <br/>
 [![Code licence](https://img.shields.io/badge/code-MIT-blue)](LICENSE)
-[![Dataset licence](https://img.shields.io/badge/dataset-CC_BY--NC--SA_2.0-lightgrey)](https://creativecommons.org/licenses/by-nc-sa/2.0/)
-[![arXiv](https://img.shields.io/badge/arXiv-2110.02035-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2110.02035)
+[![Dataset licence](https://img.shields.io/badge/dataset-CC_BY--NC--SA-lightgrey)](https://creativecommons.org/licenses/by-nc-sa/2.0/)
+[![arXiv](https://img.shields.io/badge/arXiv-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2110.02035)
 
 </div>
 
@@ -242,7 +242,7 @@ aws s3 cp --recursive s3://glovo-products-dataset-d1c9720d/language_stats/ . --n
 
 ```text
 foodi-ml-dataset/
-├── scripts/                     ⭐ dataset preparation
+├── scripts/                     source of truth: dataset preparation
 │   ├── rename_images.py         # step 3: point s3_path at your local images
 │   ├── dataset_preprocess.py    # step 4: drop rows whose image is missing
 │   └── hash_images.py           # dhash() image-hash helper, no CLI
